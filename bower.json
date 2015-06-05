@@ -1,0 +1,34 @@
+{
+  "name": "practice",
+  "version": "1.0.0",
+  "authors": [
+    "John Espenhahn <john@espenhahn.org>"
+  ],
+  "main": [
+    "server.js"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/JohnEspenhahn/MEAN-Practice",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.x",
+    "angular": "~1.3.x",
+    "angular-route": "~1.3.0",
+    "angular-bootstrap": "~0.13.0",
+    "angular-animate": "~1.3.x",
+	"angular-touch": "~1.3.x"
+  },
+  "resolutions": {
+    "angular": "~1.3.13"
+  }
+}

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<base href="/">
+	
+	<title>MEAN Practice</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<% for (var key in cssResources) { %><link rel="stylesheet" type="text/css" href="<%= cssResources[key] %>" /><% } %>
+	
+	<% for (var key in jsResources) { %><script src="<%= jsResources[key] %>"></script><% } %>
+	
+</head>
+<body data-ng-app="app">
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<h2>Voterrific</h2>
+		</div>
+	</nav>
+
+	<!-- ANGULAR DYNAMIC CONTENT -->
+	<div class="container-fluid" ng-view>
+	</div>
+</body>
+</html>

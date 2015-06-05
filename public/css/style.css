@@ -1,0 +1,44 @@
+/** For angular-bootstrap */
+.nav, .pagination, .carousel, .panel-title a, .panel-heading.accordion-toggle { cursor: pointer; }
+
+body {
+	padding-top: 70px;
+	background: #ececec;
+	color: #212121;
+}
+
+/** Square panels */
+.panel-group .panel {
+	border-radius: 0px;
+	
+}
+
+/** No default seperation between panels */
+.panel-group .panel + .panel {
+  margin-top: 0px;
+}
+
+/** Add margin when panel is open */
+.panel-collape.in {
+	margin-bottom: 7px;
+}
+
+/** Allow us to move heading to link to make ensure accordion heading click-able */
+.panel .accordion-heading {
+	padding: 0 !important;
+	
+	background: white;
+	background-image: none;
+	
+	border-radius: 0px;
+}
+
+/** Don't want any text-decoration on the accordion heading */
+.panel-title .accordion-toggle {
+	text-decoration: none !important;
+}
+
+/** The row containing the home stuff */
+.row.home-row {
+	margin-top: 2%;
+}

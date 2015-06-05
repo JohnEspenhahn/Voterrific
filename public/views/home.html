@@ -1,0 +1,16 @@
+<div class="row home-row">
+	<div class="col-xs-12 col-md-8 col-md-offset-2" data-ng-controller="CoreController">
+		<accordion close-others="oneAtATime">
+			<accordion-group is-open="row_status.open[row._id]" ng-repeat="row in rows track by $index">
+				<accordion-heading>
+					<div class="panel-heading">
+						<span class="glyphicon small pull-left" ng-class="{'glyphicon-minus': row_status.open[row._id], 'glyphicon-plus': !row_status.open[row._id]}"></span> 
+						&nbsp;&nbsp;{{ row.title }}
+						<span class="pull-right badge"></span>
+					</div>
+				</accordion-heading>
+				{{ row.body }}
+			</accordion-group>
+		</accordion>
+	</div>
+</div>
