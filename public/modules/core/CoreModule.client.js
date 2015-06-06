@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('core', [ 'ui.bootstrap' ]).run(['$templateCache', function($templateCache) {
+angular.module('core', [ 'ui.bootstrap', 'errors' ]).run(['$templateCache', function($templateCache) {
 	// Custom accordion template
 	$templateCache.put('template/accordion/accordion-group.html',
 		'<div class=\"panel panel-default\">\n' +

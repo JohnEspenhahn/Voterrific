@@ -4,7 +4,8 @@ angular.module('app').config([ '$routeProvider', '$locationProvider', function($
 	$routeProvider
 	.when('/', {
 		templateUrl: 'views/home.html',
-		controller: 'CoreController'
+		controller: 'CoreController',
+		reloadOnSearch: false
 	})
 	.otherwise({
         redirectTo: '/'

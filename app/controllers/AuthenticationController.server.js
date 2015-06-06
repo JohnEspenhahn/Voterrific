@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
 	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	FacebookStrategy = require('passport-facebook').Strategy,
-	config = require('../config/controller');
+	config = require('../config/config.controller'),
+	errors = require('../errors/errors.controller');
 	
 // used to serialize the user for the session
 passport.serializeUser(function(user, done) {
@@ -59,12 +60,12 @@ function savefgOAuthUserProfile(req, provider, providerUserProfile, done) {
 					});
 				} else {
 					// Already linked to another user
-					return done(null, user, '/?error=linked_other');
+					return done(null, user, '/?error=' + errors.get('linked_other'));
 				}
 			});
 		} else {
 			// Already linked to this
-			return done(null, user, '/?error=linked_this');
+			return done(null, user, '/?error=' + errors.get('linked_this'));
 		}
 	}
 }
@@ -91,12 +92,12 @@ function oauthCallback(strategy) {
 		passport.authenticate(strategy, function(err, user, redirectURL) {
 			if (err || !user) {
 				console.log('Error: ' + err + ' or no user');
-				return res.redirect('/?error=login_failed');
+				return res.redirect('/?error=' + errors.get('login_failed'));
 			}
 			req.login(user, function(err) {
 				if (err) {
 					console.log('Error: ' + err);
-					return res.redirect('/?error=login_failed');
+					return res.redirect('/?error=' + errors.get('login_failed'));
 				}
 
 				return res.redirect(redirectURL || '/');

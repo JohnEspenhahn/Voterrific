@@ -15,7 +15,7 @@ var express = require('express'),
 	chalk = require('chalk'),
 	ejs = require('ejs'),
 	flash = require('flash'),
-	config = require('./app/config/controller.js');
+	config = require('./app/config/config.controller.js');
 
 // Bootstrap db connection
 var db = mongoose.connect(config.db.uri, config.db.options, function(err) {
@@ -68,19 +68,19 @@ glob('./app/models/**/*.js', function(err, files) {
 		console.log(chalk.gray('Loading model ' + files[i]));
 		require(path.resolve(files[i]));
 	}
-});
-
-// Load controllers
-glob('./app/controllers/**/*.js', function(err, files) {
-	if (err) {
-		console.error(chalk.red('Load controllers error: ' + err));
-		process.exit(-1);
-	}
 	
-	for (var i = 0; i < files.length; i++) {
-		console.log(chalk.gray('Loading controller ' + files[i]));
-		(require(path.resolve(files[i])))(app);
-	}
+	// Load controllers
+	glob('./app/controllers/**/*.js', function(err, files) {
+		if (err) {
+			console.error(chalk.red('Load controllers error: ' + err));
+			process.exit(-1);
+		}
+		
+		for (var i = 0; i < files.length; i++) {
+			console.log(chalk.gray('Loading controller ' + files[i]));
+			(require(path.resolve(files[i])))(app);
+		}
+	});
 });
 
 // Load names of resources
