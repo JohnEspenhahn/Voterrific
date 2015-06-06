@@ -5,7 +5,7 @@ module.exports = function (grunt) {
 	var watchFiles = {
 		serverJS: ['Gruntfile.js', 'server.js', 'app/**/*.js', '!app/tests/'],
 		clientViews: ['public/modules/**/views/**/*.html', 'public/views/**/*.html'],
-		clientJS: ['public/js/*.js', 'public/modules/**/*.js'],
+		clientJS: ['public/js/*.js', 'public/modules/**/*.js', '!public/modules/appTemplates.js'],
 		clientCSS: ['public/modules/**/*.css'],
 		mochaTests: ['app/tests/**/*.js']
 	};
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
 		uglify : {
 			production : {
 				files : {
-					'public/dist/app.min.js' : watchFiles.clientJS
+					'public/dist/app.min.js' : watchFiles.clientJS.concat([ 'public/modules/appTemplates.js' ])
 				}
 			}
 		},
@@ -46,9 +46,9 @@ module.exports = function (grunt) {
 					livereload: true
 				}
 			},
-			/*
 			clientViews: {
 				files: watchFiles.clientViews,
+				tasks: ['ngtemplates'],
 				options: {
 					livereload: true
 				}
@@ -66,13 +66,19 @@ module.exports = function (grunt) {
 					livereload: true
 				}
 			}
-			*/
 		},
 		concurrent: {
 			options: {
 				logConcurrentOutput: true
 			},
 			tasks: ['nodemon', 'watch']
+		},
+		ngtemplates: {
+			app: {
+				cwd: 'public',
+				src: 'views/templates/*.html',
+				dest: 'public/modules/appTemplates.js'
+			}
 		}
 	});
 
@@ -81,7 +87,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-concurrent');
+	grunt.loadNpmTasks('grunt-angular-templates');
 
-	grunt.registerTask('default', ['jshint', 'uglify', 'concurrent' ]);
+	grunt.registerTask('default', ['jshint', 'uglify', 'ngtemplates', 'concurrent' ]);
 
 };

@@ -1,18 +1,22 @@
 'use strict';
 
-angular.module('core').controller('CoreController', [ '$scope', 'Core', function($scope, Core) {	
+angular.module('core').controller('CoreController', [ '$scope', '$location', 'Core', function($scope, $location, Core) {	
 	// Load rows from server
 	$scope.rows = [];
 	Core.getRows()
 		.success(function (data) {
+			// Defaults
+			data.isOpen = data.isOpen || false;
+			
+			// Add to scope
 			$scope.rows = data;
 		})
 		.error(function (err) {
+			$scope.error = err.message;
 			console.log('An error has occured! ' + err);
 		});
 		
-	// Accordion row status
-	$scope.row_status = {
-		open: { }
-	};
+	// Load error message from location search
+	$scope.error = $location.search().error;
+	$location.search('error', null);
 }]);

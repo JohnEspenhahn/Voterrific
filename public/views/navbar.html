@@ -1,0 +1,21 @@
+<nav class="navbar navbar-default navbar-static-top">
+	<div class="container" ng-controller="AuthenticationController">
+		<div class="navbar-header">
+			<h2>Voterrific</h2>
+		</div>
+			
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				<h4 class="navbar-brand" ng-if="!authentication.user">
+					Login with:&nbsp;
+					<a href="/auth/google" target="_self"><img src="/img/google.png" alt="google"></a>
+					<a href="/auth/facebook" target="_self"><img src="/img/facebook.png" alt="facebook"></a>
+				</h4>
+				
+				<h5 class="navbar-brand logout" ng-if="authentication.user">
+					<a href="javascript:void(0)" ng-click="logout()">Log out</a>
+				</h5>
+			</li>
+		</ul>
+	</div>
+</nav>

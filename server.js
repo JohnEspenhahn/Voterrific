@@ -2,14 +2,19 @@
 
 var express = require('express'),
 	app = express(),
+	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
+	session = require('express-session'),
 	path = require('path'),
 	glob = require('glob'),
 	morgan = require('morgan'),
 	mongoose = require('mongoose'),
+	passport = require('passport'),
+	MongoStore = require('connect-mongo')(session),
 	chalk = require('chalk'),
 	ejs = require('ejs'),
+	flash = require('flash'),
 	config = require('./app/config/controller.js');
 
 // Bootstrap db connection
@@ -26,11 +31,28 @@ mongoose.connection.on('error', function(err) {
 
 // Setup app
 app.set('view engine', 'ejs');
-app.use(morgan('dev'));                                         // log every request to the console
-app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
-app.use(bodyParser.json());                                     // parse application/json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
+app.use(morgan(config.log.mode)); // log every request to the console
+app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(methodOverride());
+
+// Express MongoDB session storage
+app.use(session({
+	saveUninitialized: true,
+	resave: true,
+	secret: config.sessionSecret,
+	db: new MongoStore({
+		mongooseConnection: mongoose.connection,
+		collection: config.sessionCollection
+	}),
+	cookie: config.sessionCookie,
+	name: config.sessionName
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 app.use(express.static(path.resolve('./public')));
 app.use(express.static(path.resolve('./bower_components')));

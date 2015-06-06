@@ -5,7 +5,7 @@ angular.module('core').factory('Core', [ '$http', function ($http) {
 	
 	return {
 		getRows: function() {
-			return $http.get('/rows/');
+			return $http.get('/rows');
 		}
 	};
 	

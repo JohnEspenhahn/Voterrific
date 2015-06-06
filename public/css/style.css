@@ -1,21 +1,19 @@
 /** For angular-bootstrap */
-.nav, .pagination, .carousel, .panel-title a, .panel-heading.accordion-toggle { cursor: pointer; }
+.pagination, .carousel, .panel-title a, .panel-heading.accordion-toggle { cursor: pointer; }
 
 body {
-	padding-top: 70px;
 	background: #ececec;
 	color: #212121;
+}
+
+.navbar .conatiner {
+	padding-left: 20px;
 }
 
 /** Square panels */
 .panel-group .panel {
 	border-radius: 0px;
 	
-}
-
-/** No default seperation between panels */
-.panel-group .panel + .panel {
-  margin-top: 0px;
 }
 
 /** Add margin when panel is open */
@@ -41,4 +39,9 @@ body {
 /** The row containing the home stuff */
 .row.home-row {
 	margin-top: 2%;
+}
+ 
+/** Logout button */
+.logout {
+	font-size: 16px;
 }

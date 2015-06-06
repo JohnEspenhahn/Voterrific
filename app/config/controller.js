@@ -5,6 +5,14 @@ var glob = require('glob'),
 
 var config = require('../config/config.all.js');
 
+if (!process.env.NODE_ENV) {
+	console.log(chalk.red('No NODE_ENV provided, defaulting to "dev"'));
+	process.env.NODE_ENV = 'dev';
+}
+
+var envConfig = require('../config/config.' + process.env.NODE_ENV + '.js');
+for (var key in envConfig) config[key] = envConfig[key];
+
 config.getCSSResources = function() {
 	var resources = [];
 	for (var i = 0; i < this.cssResources.length; i++) {
