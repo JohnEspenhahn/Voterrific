@@ -19,8 +19,6 @@ config.getCSSResources = function() {
 		var name = './public' + this.cssResources[i],
 			files = glob.sync(name);
 		
-		console.log(chalk.gray('CSS files: ' + files));
-		
 		for (var j = 0; j < files.length; j++) {
 			var file = files[j].substr(8);
 			
@@ -36,8 +34,6 @@ config.getJSResources = function() {
 	for (var i = 0; i < this.jsResources.length; i++) {
 		var name = './public' + this.jsResources[i],
 			files = glob.sync(name);
-		
-		console.log(chalk.gray('JS files: ' + files));
 		
 		for (var j = 0; j < files.length; j++) {
 			var file = files[j].substr(8);

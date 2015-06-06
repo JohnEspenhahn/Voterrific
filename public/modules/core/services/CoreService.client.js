@@ -50,7 +50,12 @@ angular.module('core').factory('Core', [ '$http', function ($http) {
 		
 		/** Remove a given row */
 		removeRow: function(row) {
-			this.rows.splice(this.indexOfRow(row), 1);
+			var idx = this.indexOfRow(row);
+			if (idx >= 0) this.rows.splice(idx, 1);
+		},
+		
+		hasRow: function(row) {
+			return this.indexOfRow(row) >= 0;
 		},
 		
 		indexOfRow: function(row) {

@@ -15,7 +15,7 @@ var express = require('express'),
 	chalk = require('chalk'),
 	ejs = require('ejs'),
 	flash = require('flash'),
-	config = require('./app/config/config.controller.js');
+	config = require('./app/config/ConfigController.server.js');
 
 // Bootstrap db connection
 var db = mongoose.connect(config.db.uri, config.db.options, function(err) {
@@ -58,29 +58,18 @@ app.use(express.static(path.resolve('./public')));
 app.use(express.static(path.resolve('./bower_components')));
 
 // Load models
-glob('./app/models/**/*.js', function(err, files) {
-	if (err) {
-		console.error(chalk.red('Load models error: ' + err));
-		process.exit(-1);
-	}
+var modelFiles = glob.sync('./app/models/**/*.js');
+for (var i = 0; i < modelFiles.length; i++) { require(modelFiles[i]); }
+
+// Load routers	
+var routeFiles = glob.sync('./app/routes/**/*.js');
+for (var i = 0; i < routeFiles.length; i++) { require(routeFiles[i])(app); }
+
+// Single index file
+app.get('*', function(req, res) {
+	console.log(chalk.yellow('User: ' + req.user));
 	
-	for (var i = 0; i < files.length; i++) {
-		console.log(chalk.gray('Loading model ' + files[i]));
-		require(path.resolve(files[i]));
-	}
-	
-	// Load controllers
-	glob('./app/controllers/**/*.js', function(err, files) {
-		if (err) {
-			console.error(chalk.red('Load controllers error: ' + err));
-			process.exit(-1);
-		}
-		
-		for (var i = 0; i < files.length; i++) {
-			console.log(chalk.gray('Loading controller ' + files[i]));
-			(require(path.resolve(files[i])))(app);
-		}
-	});
+	res.render(path.resolve('./public/index.ejs'), { user: req.user });
 });
 
 // Load names of resources
