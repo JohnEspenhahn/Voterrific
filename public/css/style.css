@@ -6,8 +6,12 @@ body {
 	color: #212121;
 }
 
-.navbar .conatiner {
-	padding-left: 20px;
+.navbar h2 {
+	margin-left: 10px;
+}
+
+.navbar .nav.navbar-nav {
+	margin-left: 20px;
 }
 
 /** Square panels */
@@ -34,11 +38,6 @@ body {
 /** Don't want any text-decoration on the accordion heading */
 .panel-title .accordion-toggle {
 	text-decoration: none !important;
-}
-
-/** The row containing the home stuff */
-.row.home-row {
-	margin-top: 2%;
 }
  
 /** Logout button */

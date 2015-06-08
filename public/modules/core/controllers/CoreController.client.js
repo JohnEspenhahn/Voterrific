@@ -8,11 +8,11 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 		// Add error messages as they occur
 		$scope.$watch('error', function() {
 			if ($scope.error) {
-				var newRow = { _id: $scope.error, title: 'Error', body: $scope.error, isOpen: true };
-				if (!Core.hasRow(newRow)) Core.addFirstRow(newRow);
+				var newAlert = { _id: $scope.error, type: 'error', content: { text: $scope.error } };
+				if (!Core.hasAlert(newAlert)) Core.addAlert(newAlert);
 			}
 	   });
-	
+		
 		// Load error message from location search
 		var err = $location.search().error;
 		if (err) {
@@ -20,4 +20,27 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 			$location.search('error', null);
 		}
 	}
-]);
+])
+
+// Main entry
+.directive('voterrificEntry', [ '$templateCache', '$sce', '$compile', function($templateCache, $sce, $compile) {
+	var linker = function(scope, element) {
+		var templateUrl = 'views/templates/' + scope.folder + '/' + scope.type + '.html';
+		
+		console.log('Loading template ' + templateUrl);
+		element.html($templateCache.get(templateUrl));
+		$compile(element.contents())(scope);
+		
+		console.log('Loaded: ' + element.html());
+    };
+	
+	return {
+		restrict:'E',
+		link: linker,
+		scope: {
+			type: '=',
+			folder: '=',
+			content: '=',
+		}
+	};
+}]);

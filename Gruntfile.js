@@ -41,7 +41,7 @@ module.exports = function (grunt) {
 		watch : {
 			serverJS: {
 				files: watchFiles.serverJS,
-				tasks: ['jshint'],
+				tasks: ['jshint', 'ngtemplates'],
 				options: {
 					livereload: true
 				}
@@ -76,7 +76,7 @@ module.exports = function (grunt) {
 		ngtemplates: {
 			app: {
 				cwd: 'public',
-				src: 'views/templates/*.html',
+				src: 'views/templates/**/*.html',
 				dest: 'public/modules/appTemplates.js'
 			}
 		}

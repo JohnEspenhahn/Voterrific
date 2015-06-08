@@ -4,12 +4,15 @@
 angular.module('core').factory('Core', [ '$http', function ($http) {	
 	return {
 		rows: [ ],
+		alerts: [ ],
 		
 		/** Load rows from the database and setup $scope */
 		init: function($scope) {
 			if (!$scope) throw 'Missing $scope object';
 			
+			// Add data to scope
 			$scope.rows = this.rows;
+			$scope.alerts = this.alerts;
 			
 			// Load rows from database
 			var _this = this;
@@ -45,7 +48,8 @@ angular.module('core').factory('Core', [ '$http', function ($http) {
 		
 		/** Add a row after another row */
 		addRowAfter: function(rowToAdd, rowAfter) {
-			// TODO
+			var idx = this.indexOfRow(rowAfter);
+			this.rows.splice(idx + 1, 0, rowToAdd);
 		},
 		
 		/** Remove a given row */
@@ -54,13 +58,42 @@ angular.module('core').factory('Core', [ '$http', function ($http) {
 			if (idx >= 0) this.rows.splice(idx, 1);
 		},
 		
+		/** Return true if the given row is found in the rows array */
 		hasRow: function(row) {
 			return this.indexOfRow(row) >= 0;
 		},
 		
+		/** Get the index of the given row in the rows array, or -1 if not found */
 		indexOfRow: function(row) {
 			for (var i = 0; i < this.rows.length; i++) {
 				if (this.rows[i]._id === row._id) {
+					return i;
+				}
+			}
+			
+			return -1;
+		},
+		
+		/** Add an alert to the top of the alert array */
+		addAlert: function(alert) {
+			this.alerts.push(alert);
+		},
+		
+		/** Remove an alert from the alerts array */
+		removeAlert: function(alert) {
+			var idx = this.indexOfAlert(alert);
+			if (idx >= 0) this.alerts.splice(idx, 1);
+		},
+		
+		/** Return true if the given alert is found in the alerts array */
+		hasAlert: function(alert) {
+			return this.indexOfAlert(alert) >= 0;
+		},
+		
+		/** Get the index of the given alert in the alerts array, or -1 if not found */
+		indexOfAlert: function(alert) {
+			for (var i = 0; i < this.alerts.length; i++) {
+				if (this.alerts[i]._id === alert._id) {
 					return i;
 				}
 			}

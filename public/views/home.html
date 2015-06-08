@@ -1,15 +1,24 @@
-<div class="row home-row">
+<div class="row">
 	<div class="col-xs-12 col-md-8 col-md-offset-2">
-		<accordion close-others="oneAtATime">
-			<accordion-group is-open="row.isOpen" ng-repeat="row in rows track by $index">
+		<div ng-repeat="alert in alerts">
+			<voterrific-entry folder="'alerts'" type="alert.type" content="alert.content"></voterrific-entry>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 col-md-8 col-md-offset-2">		
+		<accordion close-others="oneAtATime" ng-repeat="row in rows">
+			<accordion-group is-open="row.isOpen">
 				<accordion-heading>
 					<div class="panel-heading">
 						<span class="glyphicon small pull-left" ng-class="{'glyphicon-minus': row.isOpen, 'glyphicon-plus': !row.isOpen}"></span> 
-						&nbsp;&nbsp;{{ row.title }}
+						&nbsp;&nbsp;
+						<voterrific-entry folder="'headers'" type="row.type" content="row.header"></voterrific-header-entry>
 						<span class="pull-right badge"></span>
 					</div>
 				</accordion-heading>
-				{{ row.body }}
+				<voterrific-entry folder="'bodies'" type="row.type" content="row.body"></voterrific-entry>
 			</accordion-group>
 		</accordion>
 	</div>
