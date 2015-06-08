@@ -4,11 +4,14 @@
 	<meta charset="utf-8">
 	<base href="/">
 	
-	<title>MEAN Practice</title>
+	<title>Voterrific</title>
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<% for (var key in cssResources) { %><link rel="stylesheet" type="text/css" href="<%= cssResources[key] %>" /><% } %>
+	
+	
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 	
 	<% for (var key in jsResources) { %><script src="<%= jsResources[key] %>"></script><% } %>
 	

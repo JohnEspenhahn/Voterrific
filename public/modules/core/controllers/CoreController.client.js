@@ -27,6 +27,7 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 	var linker = function(scope, element) {
 		var templateUrl = 'views/templates/' + scope.control.type + scope.folder + '.html';
 		
+		// Debug
 		console.log(templateUrl);
 		console.log(scope);
 		

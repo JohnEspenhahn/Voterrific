@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-12 col-md-8 col-md-offset-2">
-		<div ng-repeat="alert in alerts">
-			<voterrific-entry folder="'Alert'" control="alert" content="alert.content"></voterrific-entry>
+		<div ng-repeat="alert in alerts" collapse="alert.collapse">
+			<alert type="{{alert.type}}" close="removeAlert(alert)">{{alert.text}}</alert>
 		</div>
 	</div>
 </div>
@@ -10,6 +10,8 @@
 	<div class="col-xs-12 col-md-8 col-md-offset-2">		
 		<accordion close-others="oneAtATime" ng-repeat="row in rows">
 			<accordion-group is-open="row.isOpen">
+				
+				<!-- Header. Only shows if row.isClosable -->
 				<accordion-heading>
 					<div class="panel-heading">
 						<span class="glyphicon small pull-left" ng-class="{'glyphicon-minus': row.isOpen, 'glyphicon-plus': !row.isOpen}"></span> 
@@ -18,7 +20,10 @@
 						<span class="pull-right badge"></span>
 					</div>
 				</accordion-heading>
+				
+				<!-- Body -->
 				<voterrific-entry folder="'Body'" control="row" content="row.body"></voterrific-entry>
+				
 			</accordion-group>
 		</accordion>
 	</div>

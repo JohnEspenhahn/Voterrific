@@ -1,7 +1,7 @@
 'use strict';
 
 // Front end link to backed AccordionRowRoutes
-angular.module('core').factory('Core', [ '$http', function ($http) {	
+angular.module('core').factory('Core', [ '$http', '$timeout', function ($http, $timeout) {	
 	return {
 		rows: [ ],
 		alerts: [ ],
@@ -12,18 +12,32 @@ angular.module('core').factory('Core', [ '$http', function ($http) {
 			
 			// Add data to scope
 			$scope.rows = this.rows;
+			
 			$scope.alerts = this.alerts;
+			$scope.removeAlert = this.removeAlert;
+			$scope.indexOfAlert = this.indexOfAlert;
 			
 			// Load rows from database
 			var _this = this;
 			$http.get('/rows')
-				.success(function (data) {					
-					// Add rows
+				.success(function (data) {
 					for (var i = 0; i < data.length; i++) {
-						_this.rows.push(data[i]);
+						_this.addLastRow(data[i]);
 					}
 				})
-				.error(function (err) {
+				.error(function(err) {
+					$scope.error = err.message;
+					console.log('An error has occured! ' + err);
+				});
+				
+			// Load alerts from database
+			$http.get('/alerts')
+				.success(function(data) {
+					for (var i = 0; i < data.length; i++) {
+						_this.addAlert(data[i]);
+					}
+				})
+				.error(function(err) {
 					$scope.error = err.message;
 					console.log('An error has occured! ' + err);
 				});
@@ -81,8 +95,17 @@ angular.module('core').factory('Core', [ '$http', function ($http) {
 		
 		/** Remove an alert from the alerts array */
 		removeAlert: function(alert) {
-			var idx = this.indexOfAlert(alert);
-			if (idx >= 0) this.alerts.splice(idx, 1);
+			var idx = this.indexOfAlert(alert),
+				_this = this;
+				
+			alert.collapse = true;
+			
+			var promise = $timeout(function() {
+				_this.alerts.splice(idx, 1);
+				console.log(_this.alerts);
+				
+				$timeout.cancel(promise);
+			}, 2000);
 		},
 		
 		/** Return true if the given alert is found in the alerts array */
