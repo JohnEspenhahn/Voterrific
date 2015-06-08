@@ -2,17 +2,9 @@
   "name": "practice",
   "version": "1.0.0",
   "description": "Practising working with the MEAN stack",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/JohnEspenhahn/MEAN-Practice.git"
-  },
   "readme": "README.md",
   "author": "John Espenhahn",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JohnEspenhahn/MEAN-Practice/issues"
-  },
-  "homepage": "https://github.com/JohnEspenhahn/MEAN-Practice",
+  "license": "MIT",
   "scripts": {
     "start": "grunt",
     "test": "grunt test"
