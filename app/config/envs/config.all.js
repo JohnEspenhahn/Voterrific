@@ -59,7 +59,6 @@ module.exports = {
 		'/lib/angular-touch/angular-touch.js',
 		'/lib/lodash/lodash.min.js',
 		'/lib/angular-google-maps/dist/angular-google-maps.min.js',
-		'/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-		'/modules/**/*.js'
+		'/lib/angular-bootstrap/ui-bootstrap-tpls.js'
 	]
 };

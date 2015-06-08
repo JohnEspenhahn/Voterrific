@@ -13,6 +13,9 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 		pkg : grunt.file.readJSON('package.json'),
+		auto_install: {
+			local: {}
+		},
 		jshint : {
 			all: {
 				src: watchFiles.serverJS.concat(watchFiles.clientJS),
@@ -88,7 +91,8 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-nodemon');
 	grunt.loadNpmTasks('grunt-concurrent');
 	grunt.loadNpmTasks('grunt-angular-templates');
+	grunt.loadNpmTasks('grunt-auto-install');
 
-	grunt.registerTask('default', ['jshint', 'uglify', 'ngtemplates', 'concurrent' ]);
+	grunt.registerTask('default', [ 'auto_install', 'jshint', 'uglify', 'ngtemplates', 'concurrent' ]);
 
 };

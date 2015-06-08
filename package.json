@@ -5,6 +5,7 @@
   "readme": "README.md",
   "author": "John Espenhahn",
   "license": "MIT",
+  "repository": { },
   "scripts": {
     "start": "grunt",
     "test": "grunt test"
@@ -26,6 +27,7 @@
     "express-session": "^1.11.2",
     "flash": "^1.1.0",
     "glob": "^5.0.10",
+    "grunt-auto-install": "^0.2.4",
     "grunt-cli": "0.1.13",
     "method-override": "^2.3.3",
     "mongodb": "1.3.x",

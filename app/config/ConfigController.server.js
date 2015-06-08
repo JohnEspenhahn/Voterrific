@@ -11,7 +11,13 @@ if (!process.env.NODE_ENV) {
 }
 
 var envConfig = require('./envs/config.' + process.env.NODE_ENV + '.js');
-for (var key in envConfig) config[key] = envConfig[key];
+for (var key in envConfig) {
+	if (config[key] instanceof Array) { // combine arrays
+		config[key] = config[key].concat(envConfig[key]);
+	} else { // replace everything else
+		config[key] = envConfig[key];
+	}
+}
 
 config.getCSSResources = function() {
 	var resources = [];
