@@ -1,22 +1,14 @@
 angular.module('app').run(['$templateCache', function($templateCache) {
   'use strict';
 
-  $templateCache.put('views/templates/DevBody.html',
-    ""
-  );
-
-
-  $templateCache.put('views/templates/DevHeader.html',
-    "{{ control.isOpen }}"
-  );
-
-
   $templateCache.put('views/templates/LocationSetupBody.html',
     "<div class=\"text-center\" ng-controller=\"LocationController\">\r" +
     "\n" +
     "\t<p>\r" +
     "\n" +
     "\t\tPlease provide your home address so we can determine your representatives.\r" +
+    "\n" +
+    "\t\t<span class=\"glyphicon glyphicon-info-sign glyphicon-inverse\" popover=\"No personally identifying information is saved on the server.\" popover-trigger=\"mouseenter\" aria-hidden=\"true\"></span>\r" +
     "\n" +
     "\t</p>\r" +
     "\n" +

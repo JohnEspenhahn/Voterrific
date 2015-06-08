@@ -1,6 +1,7 @@
 <div class="text-center" ng-controller="LocationController">
 	<p>
 		Please provide your home address so we can determine your representatives.
+		<span class="glyphicon glyphicon-info-sign glyphicon-inverse" popover="No personally identifying information is saved on the server." popover-trigger="mouseenter" aria-hidden="true"></span>
 	</p>
 	<div class="geolocation" ng-if="hasGeolocation()">
 		<p>
