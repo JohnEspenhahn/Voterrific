@@ -5,12 +5,12 @@ var express = require('express'),
 	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
-	session = require('express-session'),
 	path = require('path'),
 	glob = require('glob'),
 	morgan = require('morgan'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
+	session = require('express-session'),
 	MongoStore = require('connect-mongo')(session),
 	chalk = require('chalk'),
 	ejs = require('ejs'),
@@ -18,7 +18,7 @@ var express = require('express'),
 	config = require('./app/config/ConfigController.server.js');
 
 // Bootstrap db connection
-var db = mongoose.connect(config.db.uri, config.db.options, function(err) {
+mongoose.connect(config.db.uri, config.db.options, function(err) {
 	if (err) {
 		console.error(chalk.red('Could not connect to MongoDB!'));
 		console.log(chalk.red(err));
@@ -39,15 +39,11 @@ app.use(methodOverride());
 
 // Express MongoDB session storage
 app.use(session({
-	saveUninitialized: true,
-	resave: true,
+	resave: false,
+	saveUninitialized: false,
 	secret: config.sessionSecret,
-	db: new MongoStore({
-		mongooseConnection: mongoose.connection,
-		collection: config.sessionCollection
-	}),
-	cookie: config.sessionCookie,
-	name: config.sessionName
+	store: new MongoStore({ mongooseConnection: mongoose.connection }),
+	cookie: config.sessionCookie
 }));
 
 app.use(passport.initialize());

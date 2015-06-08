@@ -34,8 +34,6 @@ module.exports = {
 		// at all. The cookie will expunge when the browser is closed.
 		maxAge: null
 	},
-	// The session cookie name
-	sessionName: 'connect.sid',
 
 	google : {
 		clientID : process.env.GOOGLE_ID || '237066238200-n2c2o4lbhv69qgj9hdmhv1i49mu7ug0j.apps.googleusercontent.com',
