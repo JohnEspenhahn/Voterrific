@@ -8,7 +8,7 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 		// Add error messages as they occur
 		$scope.$watch('error', function() {
 			if ($scope.error) {
-				var newAlert = { _id: $scope.error, type: 'error', content: { text: $scope.error } };
+				var newAlert = { _id: $scope.error, type: 'Error', content: { text: $scope.error } };
 				if (!Core.hasAlert(newAlert)) Core.addAlert(newAlert);
 			}
 	   });
@@ -25,22 +25,25 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 // Main entry
 .directive('voterrificEntry', [ '$templateCache', '$sce', '$compile', function($templateCache, $sce, $compile) {
 	var linker = function(scope, element) {
-		var templateUrl = 'views/templates/' + scope.folder + '/' + scope.type + '.html';
+		var templateUrl = 'views/templates/' + scope.control.type + scope.folder + '.html';
 		
-		console.log('Loading template ' + templateUrl);
+		console.log(templateUrl);
+		console.log(scope);
+		
 		element.html($templateCache.get(templateUrl));
 		$compile(element.contents())(scope);
-		
-		console.log('Loaded: ' + element.html());
     };
 	
 	return {
 		restrict:'E',
 		link: linker,
+		replace: true,
 		scope: {
-			type: '=',
 			folder: '=',
-			content: '=',
+			
+			control: '=',
+			content: '='
+			
 		}
 	};
 }]);

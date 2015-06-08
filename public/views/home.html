@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-12 col-md-8 col-md-offset-2">
 		<div ng-repeat="alert in alerts">
-			<voterrific-entry folder="'alerts'" type="alert.type" content="alert.content"></voterrific-entry>
+			<voterrific-entry folder="'Alert'" control="alert" content="alert.content"></voterrific-entry>
 		</div>
 	</div>
 </div>
@@ -14,11 +14,11 @@
 					<div class="panel-heading">
 						<span class="glyphicon small pull-left" ng-class="{'glyphicon-minus': row.isOpen, 'glyphicon-plus': !row.isOpen}"></span> 
 						&nbsp;&nbsp;
-						<voterrific-entry folder="'headers'" type="row.type" content="row.header"></voterrific-header-entry>
+						<voterrific-entry folder="'Header'" control="row" content="row.header"></voterrific-header-entry>
 						<span class="pull-right badge"></span>
 					</div>
 				</accordion-heading>
-				<voterrific-entry folder="'bodies'" type="row.type" content="row.body"></voterrific-entry>
+				<voterrific-entry folder="'Body'" control="row" content="row.body"></voterrific-entry>
 			</accordion-group>
 		</accordion>
 	</div>
