@@ -34,7 +34,7 @@ Business Plan
 	All voting age people of the U.S. Targeted towards people from the age of 18-50 who are more likely to use computers and willing to try new, easier ways to become
 	informed voters.
 * What is the cost and revenue breakdown?
-	The only costs are hosting and possibly some avertising. THe revenue will come from a small number of ads seamlessly included in the application and from donations
+	The only costs are hosting and possibly some advertising. THe revenue will come from a small number of ads seamlessly included in the application and from donations
 	(The Sunlight Foundation is funded by donations so this is likely a viable option for some revenue). This, like most open-data projects, will likely be non-profit.
 
 Progress/Execution
