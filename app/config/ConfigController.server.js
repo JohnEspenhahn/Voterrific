@@ -1,23 +1,31 @@
 'use strict';
 
 var glob = require('glob'),
-	chalk = require('chalk');
+	winston = require('winston');
 
 var config = require('./envs/config.all.js');
 
 if (!process.env.NODE_ENV) {
-	console.log(chalk.red('No NODE_ENV provided, defaulting to "dev"'));
+	winston.warn('No NODE_ENV provided, defaulting to "dev"');
 	process.env.NODE_ENV = 'dev';
+} else {
+	winston.info('Running with NODE_ENV ' + process.env.NODE_ENV);
 }
 
-var envConfig = require('./envs/config.' + process.env.NODE_ENV + '.js');
-for (var key in envConfig) {
-	if (config[key] instanceof Array) { // combine arrays
-		config[key] = config[key].concat(envConfig[key]);
-	} else { // replace everything else
-		config[key] = envConfig[key];
+function mergeConfig(configA, configB) {
+	for (var key in configA) {
+		if (configB[key]) {
+			if (configA[key] instanceof Array) { // combine arrays
+				configA[key] = configA[key].concat(configB[key]);
+			} else if (configA[key] instanceof Object) {
+				mergeConfig(configA[key], configB[key]);
+			} else { // replace everything else
+				configA[key] = configB[key];
+			}
+		}
 	}
 }
+mergeConfig(config, require('./envs/config.' + process.env.NODE_ENV + '.js'));
 
 config.getCSSResources = function() {
 	var resources = [];

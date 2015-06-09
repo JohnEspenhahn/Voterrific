@@ -5,7 +5,7 @@
   "readme": "README.md",
   "author": "John Espenhahn",
   "license": "MIT",
-  "repository": { },
+  "repository": {},
   "scripts": {
     "start": "grunt",
     "test": "grunt test"
@@ -18,7 +18,7 @@
     "angular": "1.4.x",
     "body-parser": "^1.12.4",
     "bower": "~1.3.8",
-    "chalk": "~1.0.0",
+    "chalk": "^1.0.0",
     "connect": "^2.29.2",
     "connect-mongo": "^0.8.1",
     "cookie-parser": "^1.3.5",
@@ -36,7 +36,8 @@
     "passport": "~0.2.0",
     "passport-facebook": "~1.0.2",
     "passport-google-oauth": "^0.2.0",
-    "request": "2.x"
+    "request": "2.x",
+    "winston": "^1.0.0"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

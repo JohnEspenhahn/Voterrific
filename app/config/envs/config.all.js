@@ -13,7 +13,9 @@ module.exports = {
 	},
 	
 	log : {
-		mode : 'tiny'
+		folder: './logs',
+		default: 'voterrific.log',
+		exceptions: 'exceptions.log'
 	},
 
 	// The secret should be set to a non-guessable string that

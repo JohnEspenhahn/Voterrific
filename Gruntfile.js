@@ -10,11 +10,14 @@ module.exports = function (grunt) {
 		mochaTests: ['app/tests/**/*.js']
 	};
 
-
 	grunt.initConfig({
 		pkg : grunt.file.readJSON('package.json'),
 		auto_install: {
-			local: {}
+			local: {
+				options: {
+					npm: false
+				}
+			}
 		},
 		jshint : {
 			all: {

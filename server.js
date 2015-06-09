@@ -7,12 +7,12 @@ var express = require('express'),
 	methodOverride = require('method-override'),
 	path = require('path'),
 	glob = require('glob'),
-	morgan = require('morgan'),
+	winston = require('winston'),
+	fs = require('fs'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	session = require('express-session'),
 	MongoStore = require('connect-mongo')(session),
-	chalk = require('chalk'),
 	ejs = require('ejs'),
 	flash = require('flash'),
 	config = require('./app/config/ConfigController.server.js');
@@ -20,18 +20,32 @@ var express = require('express'),
 // Bootstrap db connection
 mongoose.connect(config.db.uri, config.db.options, function(err) {
 	if (err) {
-		console.error(chalk.red('Could not connect to MongoDB!'));
-		console.log(chalk.red(err));
+		winston.error('Could not connect to MongoDB!');
+		winston.error(err);
 	}
 });
 mongoose.connection.on('error', function(err) {
-	console.error(chalk.red('MongoDB connection error: ' + err));
+	winston.error('MongoDB connection error: ' + err);
 	process.exit(-1);
 });
 
+// Setup log
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, { colorize: true, leve: 'debug' });
+winston.add(winston.transports.File, { 
+	filename: config.log.folder + '/' + config.log.default,
+	prettyPrint: true,
+	json: false
+
+});
+winston.handleExceptions(new winston.transports.File({ 
+	filename: config.log.folder + '/' + config.log.exceptions,
+	prettyPrint: true,
+	json: false
+}));
+
 // Setup app
 app.set('view engine', 'ejs');
-app.use(morgan(config.log.mode)); // log every request to the console
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -61,9 +75,9 @@ for (var i = 0; i < modelFiles.length; i++) { require(modelFiles[i]); }
 var routeFiles = glob.sync('./app/routes/**/*.js');
 for (var i = 0; i < routeFiles.length; i++) { require(routeFiles[i])(app); }
 
-// Single index file
+// Single index file route
 app.get('*', function(req, res) {
-	console.log(chalk.yellow('User: ' + req.user));
+	winston.info('User: ' + req.user);
 	
 	res.render(path.resolve('./public/index.ejs'), { user: req.user });
 });
@@ -75,8 +89,9 @@ app.locals.cssResources = config.getCSSResources();
 // Start app
 app.listen(config.port, config.uri);
 
-console.log(chalk.green('Running at ' + config.uri + ':' + config.port));
-console.log('--');
+winston.info('Logging to directory ' + config.log.folder);
+winston.info('Running at ' + config.uri + ':' + config.port);
+winston.info('--');
 
 // expose app           
 exports = module.exports = app; 
