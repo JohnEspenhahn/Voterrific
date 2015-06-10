@@ -16,6 +16,10 @@ var AccordionRowSchema = new Schema({
 		type: Boolean,
 		default: true
 	},
+	isAlert: {
+		type: Boolean,
+		default: false
+	},
 	header: { },
 	body: { }
 });

@@ -31,7 +31,11 @@ mongoose.connection.on('error', function(err) {
 
 // Setup log
 winston.remove(winston.transports.Console);
-winston.add(winston.transports.Console, { colorize: true, leve: 'debug' });
+winston.add(winston.transports.Console, { 
+	colorize: true, 
+	leve: 'debug',
+	handleExceptions: true
+});
 winston.add(winston.transports.File, { 
 	filename: config.log.folder + '/' + config.log.default,
 	prettyPrint: true,

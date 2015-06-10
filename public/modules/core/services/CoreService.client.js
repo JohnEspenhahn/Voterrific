@@ -22,19 +22,9 @@ angular.module('core').factory('Core', [ '$http', '$timeout', function ($http, $
 			$http.get('/rows')
 				.success(function (data) {
 					for (var i = 0; i < data.length; i++) {
-						_this.addLastRow(data[i]);
-					}
-				})
-				.error(function(err) {
-					$scope.error = err.message;
-					console.log('An error has occured! ' + err);
-				});
-				
-			// Load alerts from database
-			$http.get('/alerts')
-				.success(function(data) {
-					for (var i = 0; i < data.length; i++) {
-						_this.addAlert(data[i]);
+						var row = data[i];
+						if (row.isAlert) _this.addAlert(row);
+						else _this.addLastRow(row);
 					}
 				})
 				.error(function(err) {
@@ -93,7 +83,7 @@ angular.module('core').factory('Core', [ '$http', '$timeout', function ($http, $
 			this.alerts.push(alert);
 		},
 		
-		/** Remove an alert from the alerts array */
+		/** Run animation to hide alert, then remove from the alerts array */
 		removeAlert: function(alert) {
 			var idx = this.indexOfAlert(alert),
 				_this = this;

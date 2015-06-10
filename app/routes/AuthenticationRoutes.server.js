@@ -21,7 +21,7 @@ function fgStrategyCallback(provider) {
 		AuthenticationController.savefgOAuthUserProfile(req, provider, providerUserProfile, done);
 	};
 }
-	
+
 module.exports = function(app) {	
 	// Setting the facebook oauth routes
 	app.route('/auth/facebook').get(passport.authenticate('facebook', {

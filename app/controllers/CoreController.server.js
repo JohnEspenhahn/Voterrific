@@ -2,8 +2,7 @@
 
 var path = require('path'),
 	mongoose = require('mongoose'),
-	AccordionRow = mongoose.model('AccordionRow'),
-	Alert = mongoose.model('Alert');
+	AccordionRow = mongoose.model('AccordionRow');
 
 module.exports = {
 	
@@ -12,14 +11,6 @@ module.exports = {
 		AccordionRow.find({}, function(err, rows) {
 			if (err) return res.set(400).send(err);
 			res.json(rows);
-		});
-	},
-	
-	// Get alerts from database
-	getAlerts: function(req, res) {
-		Alert.find({}, function(err, alerts) {
-			if (err) return res.set(400).send(err);
-			res.json(alerts);
 		});
 	}
 	

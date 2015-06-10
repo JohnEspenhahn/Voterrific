@@ -1,7 +1,7 @@
 {
-  "name": "practice",
-  "version": "1.0.0",
-  "description": "Practising working with the MEAN stack",
+  "name": "Voterrific",
+  "version": "1.1.0",
+  "description": "Get quick and clear infromation on your representatives",
   "readme": "README.md",
   "author": "John Espenhahn",
   "license": "MIT",
