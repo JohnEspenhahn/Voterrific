@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Save the old HOME so we can reset after script.
 # Bower and bower as it is run buy grunt both want
 # to touch .local and .config files in $HOME which 
@@ -5,16 +7,12 @@
 # the REPO_DIR temporarily.
 OLD_HOME=$HOME
 
-##########
-echo "INFO: Running 'bower install'"
-cd $OPENSHIFT_REPO_DIR
-export HOME=$OPENSHIFT_REPO_DIR
-bower install
-
-##########
+##########"
 echo "INFO: Running 'grunt build'"
+cd $OPENSHIFT_REPO_DIR
+HOME=$OPENSHIFT_REPO_DIR
 grunt build
 
 #########
-export HOME=$OLD_HOME
+HOME=$OLD_HOME
 echo "INFO: HOME is $HOME"

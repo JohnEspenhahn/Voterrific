@@ -15,8 +15,7 @@ module.exports = function (grunt) {
 		auto_install: {
 			local: {
 				options: {
-					npm: false,
-					bower: false // disable bower for testing on openshift
+					npm: false
 				}
 			}
 		},
@@ -98,6 +97,6 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-auto-install');
 
 	grunt.registerTask('default', [ 'jshint', 'concurrent' ]);
-	grunt.registerTask('build', [ 'auto_install', 'uglify', 'ngtemplates' ])
+	grunt.registerTask('build', [ 'auto_install', 'uglify', 'ngtemplates' ]);
 
 };
