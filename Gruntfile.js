@@ -15,7 +15,8 @@ module.exports = function (grunt) {
 		auto_install: {
 			local: {
 				options: {
-					npm: false
+					npm: false,
+					bower: false // disable bower for testing on openshift
 				}
 			}
 		},
