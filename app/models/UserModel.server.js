@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 	
-var UserModel = new Schema({
+var UserSchema = new Schema({
 	/*
 	email: {
 		type: String,
@@ -31,4 +31,9 @@ var UserModel = new Schema({
 	}
 });
 
-mongoose.model('User', UserModel);
+UserSchema.methods.hasDistricts = function() {
+	var dist = this.districts;
+	return dist.house && dist.senate && dist.state_lower && dist.state_upper;
+};
+
+mongoose.model('User', UserSchema);

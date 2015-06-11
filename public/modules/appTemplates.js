@@ -8,15 +8,15 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "\t\tPlease provide your home address so we can determine your representatives.\r" +
     "\n" +
-    "\t\t<span class=\"glyphicon glyphicon-info-sign glyphicon-inverse\" popover=\"No personally identifying information is saved on the server.\" popover-trigger=\"mouseenter\" aria-hidden=\"true\"></span>\r" +
+    "\t\t<span class=\"glyphicon glyphicon-info-sign glyphicon-inverse\" popover=\"Your address is not saved on our servers.\" popover-trigger=\"mouseenter\" aria-hidden=\"true\"></span>\r" +
     "\n" +
     "\t</p>\r" +
     "\n" +
-    "\t<div class=\"geolocation\" ng-if=\"hasGeolocation()\">\r" +
+    "\t<div class=\"geolocation\" ng-if=\"hasGeolocation() && !geolocateError\">\r" +
     "\n" +
     "\t\t<p>\r" +
     "\n" +
-    "\t\t\t<button type=\"button\" class=\"btn btn-default\">Use my current location</button>\r" +
+    "\t\t\t<button type=\"button\" class=\"btn btn-default\" ng-click=\"withCurrentLocation()\">Use my current location</button>\r" +
     "\n" +
     "\t\t</p>\r" +
     "\n" +
@@ -28,7 +28,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "\t</div>\r" +
     "\n" +
-    "\t<form class=\"form\">\r" +
+    "\t<form class=\"form\" ng-submit=\"withAddress()\">\r" +
     "\n" +
     "\t\t<div class=\"row form-group\">\r" +
     "\n" +
@@ -36,7 +36,7 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "\t\t\t\t<label class=\"sr-only\" for=\"address\">Address</label>\r" +
     "\n" +
-    "\t\t\t\t<input type=\"text\" class=\"form-control address\" id=\"address\" placeholder=\"Home Address\" auto-address required>\r" +
+    "\t\t\t\t<input type=\"text\" class=\"form-control address\" ng-model=\"address\" ng-model-options=\"{ getterSetter: true }\" id=\"address\" placeholder=\"Home Address\" auto-address required>\r" +
     "\n" +
     "\t\t\t\t<button type=\"submit\" class=\"btn btn-default\">Submit</button>\r" +
     "\n" +

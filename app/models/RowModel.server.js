@@ -3,7 +3,7 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
-var AccordionRowSchema = new Schema({
+var RowSchema = new Schema({
 	type: {
 		type: String,
 		required: true
@@ -24,4 +24,4 @@ var AccordionRowSchema = new Schema({
 	body: { }
 });
 
-mongoose.model('AccordionRow', AccordionRowSchema);
+mongoose.model('Row', RowSchema);
