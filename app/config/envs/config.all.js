@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+	secure: false,
 	uri : process.env.OPENSHIFT_NODEJS_IP || 'localhost',
 	port : process.env.OPENSHIFT_NODEJS_PORT || 80,
 

@@ -8,7 +8,7 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 		// Add error messages as they occur
 		$scope.$watch('error', function() {
 			if ($scope.error) {
-				var newAlert = { _id: $scope.error, type: 'Error', content: { text: $scope.error } };
+				var newAlert = { _id: $scope.error, type: 'danger', content: { text: $scope.error } };
 				if (!Core.hasAlert(newAlert)) Core.addAlert(newAlert);
 			}
 	   });
