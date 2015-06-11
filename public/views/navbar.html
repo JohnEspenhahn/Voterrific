@@ -1,21 +1,29 @@
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
 	<div class="container" ng-controller="AuthenticationController">
 		<div class="navbar-header">
-			<h2><a href="/">Voterrific</a></h2>
+			<button class="navbar-toggle" type="button" ng-init="isNavbarCollapsed = true" ng-click="isNavbarCollapsed = !isNavbarCollapsed">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="/">Voterrific</a>
 		</div>
 		
-		<ul class="nav navbar-nav navbar-right">
-			<li>
-				<h4 class="navbar-brand" ng-if="!authentication.user">
-					Login with:&nbsp;
-					<a href="/auth/google" target="_self"><img src="/img/google.png" alt="google"></a>
-					<a href="/auth/facebook" target="_self"><img src="/img/facebook.png" alt="facebook"></a>
-				</h4>
-				
-				<h5 class="navbar-brand logout" ng-if="authentication.user">
-					<a href="javascript:void(0)" ng-click="logout()">Log out</a>
-				</h5>
-			</li>
-		</ul>
+		<div collapse="isNavbarCollapsed" class="navbar-collapse bs-js-navbar-collapse">
+			<ul class="nav navbar-nav navbar-right navbar-text">
+				<li>
+					<div ng-if="!authentication.user">
+						Login with:&nbsp;
+						<a href="/auth/google" target="_self"><img src="/img/google.png" alt="google"></a>
+						<a href="/auth/facebook" target="_self"><img src="/img/facebook.png" alt="facebook"></a>
+					</div>
+					
+					<div class="logout" ng-if="authentication.user">
+						<a href="javascript:void(0)" ng-click="logout()">Log out</a>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</div>
 </nav>
