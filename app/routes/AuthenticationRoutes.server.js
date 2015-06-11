@@ -11,7 +11,6 @@ function fgStrategyCallback(provider) {
 	return function(req, accessToken, refreshToken, profile, done) {
 		var providerUserProfile = {
 			displayName: profile.displayName,
-			email: profile.emails[0].value,
 			providers: { }
 		};
 		
@@ -24,16 +23,13 @@ function fgStrategyCallback(provider) {
 
 module.exports = function(app) {	
 	// Setting the facebook oauth routes
-	app.route('/auth/facebook').get(passport.authenticate('facebook', {
-		scope: ['email']
-	}));
+	app.route('/auth/facebook').get(passport.authenticate('facebook', { }));
 	app.route('/auth/facebook/callback').get(AuthenticationController.oauthCallback('facebook'));
 
 	// Setting the google oauth routes
 	app.route('/auth/google').get(passport.authenticate('google', {
 		scope: [
 			'https://www.googleapis.com/auth/userinfo.profile',
-			'https://www.googleapis.com/auth/userinfo.email'
 		]
 	}));
 	app.route('/auth/google/callback').get(AuthenticationController.oauthCallback('google'));

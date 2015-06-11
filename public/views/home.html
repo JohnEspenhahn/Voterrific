@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-12 col-md-8 col-md-offset-2">
 		<div ng-repeat="alert in alerts" collapse="alert.collapse">
-			<alert type="{{alert.type}}" close="removeAlert(alert)">{{alert.content.text}}</alert>
+			<alert type="{{alert.type}}" close="removeAlert(alert)"><span ng-bind-html="alert.content.text"></span></alert>
 		</div>
 	</div>
 </div>

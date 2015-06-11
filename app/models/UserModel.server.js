@@ -4,12 +4,14 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 	
 var UserModel = new Schema({
+	/*
 	email: {
 		type: String,
 		trim: true,
 		required: 'Please fill in your email',
 		match: [/.+\@.+\..+/, 'Please fill a valid email address']
 	},
+	*/
 	
 	displayName: {
 		type: String,

@@ -60,6 +60,8 @@ module.exports = {
 		'/lib/angular-route/angular-route.min.js',
 		'/lib/angular-animate/angular-animate.js',
 		'/lib/angular-touch/angular-touch.js',
+		'/lib/angular-sanitize/angular-sanitize.min.js',
+		'/lib/ngstorage/ngStorage.min.js',
 		'/lib/lodash/lodash.min.js',
 		'/lib/angular-google-maps/dist/angular-google-maps.min.js',
 		'/lib/angular-bootstrap/ui-bootstrap-tpls.js'

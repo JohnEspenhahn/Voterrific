@@ -1,21 +1,25 @@
 'use strict';
 
 // Front end link to backed AccordionRowRoutes
-angular.module('core').factory('Core', [ '$http', '$timeout', function ($http, $timeout) {	
+angular.module('core').factory('Core', [ '$http', '$localStorage', '$timeout', function ($http, $localStorage, $timeout) {	
 	return {
 		rows: [ ],
 		alerts: [ ],
+
+		needsInit: true,
 		
 		/** Load rows from the database and setup $scope */
 		init: function($scope) {
+			// Setup scope
 			if (!$scope) throw 'Missing $scope object';
-			
-			// Add data to scope
-			$scope.rows = this.rows;
-			
-			$scope.alerts = this.alerts;
-			$scope.removeAlert = this.removeAlert;
-			$scope.indexOfAlert = this.indexOfAlert;
+			else this.setupScope($scope);
+
+			// After making public to scope, don't need the reset
+			if (!this.needsInit) return;
+			else this.needsInit = false;
+
+			// Init functions
+			this.acceptTerms();
 			
 			// Load rows from database
 			var _this = this;
@@ -31,6 +35,26 @@ angular.module('core').factory('Core', [ '$http', '$timeout', function ($http, $
 					$scope.error = err.message;
 					console.log('An error has occured! ' + err);
 				});
+		},
+
+		setupScope: function($scope) {
+			for (var key in this) {
+				if (!key.startsWith('_')) {
+					if (!$scope[key]) {
+						$scope[key] = this[key];
+					} else {
+						console.log('Tried to override ' + key + ' in $scope');
+					}
+				}
+			}
+		},
+
+		acceptTerms: function() {
+			if (!$localStorage.accept_terms) {
+				this.addAlert({ _id: 'accept_terms', type: 'info', content: { 
+					text: 'By using Voterrific you are agreeing to our <a href="/terms_of_use">Terms of Use</a> and <a href="/privacy_policy">Privacy Policy</a>. We use cookies to improve the user experience, and use social profile logins to save you the trouble of making <i>yet another</i> account.'
+				} });
+			}
 		},
 		
 		/** Minimize all the rows */
@@ -89,11 +113,10 @@ angular.module('core').factory('Core', [ '$http', '$timeout', function ($http, $
 				_this = this;
 				
 			alert.collapse = true;
+			this.onCloseAlert(alert._id);
 			
 			var promise = $timeout(function() {
-				_this.alerts.splice(idx, 1);
-				console.log(_this.alerts);
-				
+				_this.alerts.splice(idx, 1);				
 				$timeout.cancel(promise);
 			}, 2000);
 		},
@@ -101,6 +124,15 @@ angular.module('core').factory('Core', [ '$http', '$timeout', function ($http, $
 		/** Return true if the given alert is found in the alerts array */
 		hasAlert: function(alert) {
 			return this.indexOfAlert(alert) >= 0;
+		},
+
+		/** Called when an alert is closed. Passed the alert's id */
+		onCloseAlert: function(id) {
+			switch (id) {
+				case 'accept_terms':
+					$localStorage.accept_terms = true;
+					break;
+			}
 		},
 		
 		/** Get the index of the given alert in the alerts array, or -1 if not found */

@@ -26,10 +26,6 @@
 
 	<% include ./views/navbar.html %>
 
-	<!-- ANGULAR DYNAMIC CONTENT -->
-	<div class="container-fluid" ng-view>
-	</div>
-	
 	<!--[if lt IE 9]>
 	<section class="browsehappy jumbotron hide">
 		<h1>Hello there!</h1>
@@ -38,5 +34,11 @@
 		<p><a href="http://browsehappy.com" class="btn btn-primary btn-lg" role="button">Yes, upgrade my browser!</a></p>
 	</section>
 	<![endif]-->
+
+	<!-- ANGULAR DYNAMIC CONTENT -->
+	<div class="container-fluid" ng-view>
+	</div>
+
+	<% include ./views/footer.html %>
 </body>
 </html>
