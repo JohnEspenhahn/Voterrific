@@ -73,10 +73,6 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 ])
 
 .directive('autoAddress', function() {
-	var updateModel = function(element) {
-
-	};
-
 	return {
 		require: 'ngModel',
 		restrict: 'A',
