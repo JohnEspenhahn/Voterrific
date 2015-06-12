@@ -2,7 +2,43 @@
 
 angular.module('location').controller('LocationController', [ '$http', '$window', '$scope', 'uiGmapGoogleMapApi', 'Core',
 	function($http, $window, $scope, uiGmapGoogleMapApi, Core) {
-		$scope.hasGeolocation = function() { return $window.navigator.geolocation; };
+		// Ensure we have geolocation before calling functions that need it
+		$scope.geolocateError = false;
+		var lat, lng, toGeoLocate = [];
+		function withGeoLocation(callback) {
+			if (!$scope.geolocateError && lat && lng) {
+				callback(lat, lng);
+			} else if (toGeoLocate) {
+				toGeoLocate.push(callback);
+			}
+		}
+		
+		// Start loading geolocation if available
+		if ($window.navigator.geolocation) {
+			$window.navigator.geolocation.getCurrentPosition(
+				function(position) { // success
+					lat = position.coords.latitude;
+					lng = position.coords.longitude;
+
+					// Call the functions already requesting location
+					for (var i = 0; i < toGeoLocate.length; i++) {
+						(toGeoLocate[i])(lat, lng);
+					}
+					toGeoLocate = null;
+				},
+				function() { // error
+					console.log('Geolocate error');
+					$scope.$apply(function() {
+						$scope.geolocateError = true;
+					});
+				}
+			);
+		}
+		
+		// Function to check if no geolocation error and browser supports geolocation
+		$scope.hasGeolocation = function() { return !$scope.geolocateError && $window.navigator.geolocation; };
+		
+		$scope.getGeolocationErrorMss = function() { return (this.hasGeolocation() ? '' : 'Geolocation disabled by user'); };
 
 		// Send load districts with geolocaiton
 		$scope.withCurrentLocation = function() {
@@ -30,36 +66,6 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 					$scope.error = 'Failed to load districts with the given address!';
 				});
 		};
-
-		// Ensure we have geolocation before calling functions that need it
-		$scope.geolocateError = false;
-		var lat, lng, toGeoLocate = [];
-		function withGeoLocation(callback) {
-			if (!$scope.geolocateError && lat && lng) {
-				callback(lat, lng);
-			} else {
-				toGeoLocate.push(callback);
-			}
-		}
-		
-		// Start loading geolocation if available
-		if ($scope.hasGeolocation()) {
-			$window.navigator.geolocation.getCurrentPosition(
-				function(position) { // success
-					lat = position.coords.latitude;
-					lng = position.coords.longitude;
-
-					// Call the functions already requesting location
-					for (var i = 0; i < toGeoLocate.length; i++) {
-						(toGeoLocate[i])(lat, lng);
-					}
-					toGeoLocate = null;
-				},
-				function() { // error
-					$scope.geolocateError = true;
-				}
-			);
-		}
 		
 		// Start loading google maps api
 		uiGmapGoogleMapApi.then(function(maps) {
@@ -86,8 +92,8 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 			google.maps.event.addListener(scope.googleAutocomplete, 'place_changed', function() {
 				var newAddress = scope.googleAutocomplete.getPlace().formatted_address;
 				scope.$apply(function(){
-                        ngModel.$setViewValue(newAddress);
-                    });
+                    ngModel.$setViewValue(newAddress);
+                });
 			});
 		}
 	};

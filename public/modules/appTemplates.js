@@ -7,9 +7,9 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\t\tPlease provide your home address so we can determine your representatives.\n" +
     "\t\t<span class=\"glyphicon glyphicon-info-sign glyphicon-inverse\" popover=\"Your address is not saved on our servers.\" popover-trigger=\"mouseenter\" aria-hidden=\"true\"></span>\n" +
     "\t</p>\n" +
-    "\t<div class=\"geolocation\" ng-if=\"hasGeolocation() && !geolocateError\">\n" +
-    "\t\t<p>\n" +
-    "\t\t\t<button type=\"button\" class=\"btn btn-default\" ng-click=\"withCurrentLocation()\">Use my current location</button>\n" +
+    "\t<div class=\"geolocation\">\n" +
+    "\t\t<p style=\"display: inline-block;\" popover=\"{{ getGeolocationErrorMss() }}\" popover-trigger=\"mouseenter\">\n" +
+    "\t\t\t<button type=\"button\" class=\"btn btn-default\" ng-click=\"withCurrentLocation()\" ng-disabled=\"!hasGeolocation()\">Use my current location</button>\n" +
     "\t\t</p>\n" +
     "\t\t<p>\n" +
     "\t\t\t<b>OR</b>\n" +
