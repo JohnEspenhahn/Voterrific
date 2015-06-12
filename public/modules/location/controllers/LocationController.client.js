@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('location').controller('LocationController', [ '$http', '$window', '$scope', 'uiGmapGoogleMapApi',
-	function($http, $window, $scope, uiGmapGoogleMapApi) {
+angular.module('location').controller('LocationController', [ '$http', '$window', '$scope', 'uiGmapGoogleMapApi', 'Core',
+	function($http, $window, $scope, uiGmapGoogleMapApi, Core) {
 		$scope.hasGeolocation = function() { return $window.navigator.geolocation; };
 
 		// Send load districts with geolocaiton
@@ -10,6 +10,8 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 				$http.get('/loadDistricts/' + lat + '/' + lng)
 					.success(function(data) {
 						console.log('Loaded distrcts');
+
+						Core.removeRow({ _id: $scope.control._id });
 					})
 					.error(function(data) {
 						$scope.error = 'Failed to load districts with your current location!';
@@ -22,6 +24,7 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 			$http.get('/loadDistricts/' + $scope.address)
 				.success(function(data) {
 					console.log('Loaded distrcts');
+					Core.removeRow({ _id: $scope.control._id });
 				})
 				.error(function(data) {
 					$scope.error = 'Failed to load districts with the given address!';

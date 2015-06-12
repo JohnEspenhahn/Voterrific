@@ -12,14 +12,14 @@ angular.module('core').factory('Core', [ '$http', '$localStorage', '$timeout', f
 		init: function($scope) {
 			// Setup scope
 			if (!$scope) throw 'Missing $scope object';
-			else this.setupScope($scope);
+			else this._setupScope($scope);
 
 			// After making public to scope, don't need the reset
 			if (!this.needsInit) return;
 			else this.needsInit = false;
 
 			// Init functions
-			this.acceptTerms();
+			this._acceptTerms();
 			
 			// Load rows from database
 			var _this = this;
@@ -37,7 +37,7 @@ angular.module('core').factory('Core', [ '$http', '$localStorage', '$timeout', f
 				});
 		},
 
-		setupScope: function($scope) {
+		_setupScope: function($scope) {
 			for (var key in this) {
 				if (!key.startsWith('_')) {
 					if (!$scope[key]) {
@@ -49,7 +49,7 @@ angular.module('core').factory('Core', [ '$http', '$localStorage', '$timeout', f
 			}
 		},
 
-		acceptTerms: function() {
+		_acceptTerms: function() {
 			if (!$localStorage.accept_terms) {
 				this.addAlert({ _id: 'accept_terms', type: 'info', content: { 
 					text: 'By using Voterrific you are agreeing to our <a href="/terms_of_use">Terms of Use</a> and <a href="/privacy_policy">Privacy Policy</a>. We use cookies to improve the user experience, and use social profile logins to save you the trouble of making <i>yet another</i> account.'

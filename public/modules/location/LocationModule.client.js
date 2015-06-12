@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('location', ['uiGmapgoogle-maps']).config([ 'uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
+angular.module('location', [ 'uiGmapgoogle-maps', 'core' ]).config([ 'uiGmapGoogleMapApiProvider', function(uiGmapGoogleMapApiProvider) {
     uiGmapGoogleMapApiProvider.configure({
         key: 'AIzaSyD0d7h9MKnvO8J_aWUO1PdJP4hntSzRWfA',
         v: '3.17',
