@@ -82,7 +82,7 @@ for (var i = 0; i < routeFiles.length; i++) { require(routeFiles[i])(app); }
 // Single index file route
 app.get('*', function(req, res) {
 	if (config.secure && req.headers['x-forwarded-proto'] !== 'https') {
-        return res.redirect(['https://', req.get('Host'), req.url].join(''));
+        return res.redirect(['https://', req.hostname, req.url].join(''));
     }
 	
 	res.render(path.resolve('./public/index.ejs'), { user: req.user });

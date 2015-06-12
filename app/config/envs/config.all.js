@@ -2,8 +2,8 @@
 
 module.exports = {
 	secure: false,
-	uri : process.env.OPENSHIFT_NODEJS_IP || 'localhost',
-	port : process.env.OPENSHIFT_NODEJS_PORT || 80,
+	uri : process.env.IP || process.env.OPENSHIFT_NODEJS_IP || 'localhost',
+	port : process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 80,
 
 	db : {
 		uri : 'mongodb://' + (process.env.OPENSHIFT_MONGODB_DB_HOST || 'localhost') + ':' + (process.env.OPENSHIFT_MONGODB_DB_PORT || '27017') + '/voter',
