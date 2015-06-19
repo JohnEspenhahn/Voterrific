@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+	winston = require('winston'),
 	User = mongoose.model('User'),
 	passport = require('passport'),
 	errors = require('./ErrorsController.server.js');
@@ -40,7 +41,7 @@ exports.oauthCallback = function(strategy) {
 // Save the profile loaded by either Facebook or Google
 exports.savefgOAuthUserProfile = function(req, provider, providerUserProfile, done) {
 	var searchQuery = {};
-	searchQuery['providers.' + provider] = providerUserProfile.providerId;
+	searchQuery['providers.' + provider] = providerUserProfile.providers[provider];
 	
 	if (!req.user) {
 		User.findOne(searchQuery, function(err, user) {

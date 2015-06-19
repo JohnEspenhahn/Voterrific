@@ -25,15 +25,26 @@ var UserSchema = new Schema({
 	/** Voterrific districts */
 	districts: {
 		house: String,
-		senate: String,
+
+		state: String,
 		state_lower: String,
 		state_upper: String
+	},
+
+	/** Voterrific representatives (temp) */
+	representatives: {
+		house: Object,
+		senate_junior: Object,
+		senate_senior: Object,
+
+		state_lower: Object,
+		state_upper: Object
 	}
 });
 
 UserSchema.methods.hasDistricts = function() {
 	var dist = this.districts;
-	return dist.house && dist.senate && dist.state_lower && dist.state_upper;
+	return dist.house && dist.state && dist.state_lower && dist.state_upper;
 };
 
 mongoose.model('User', UserSchema);

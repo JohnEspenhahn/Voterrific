@@ -1,6 +1,7 @@
 'use strict';
 
-var passport = require('passport'),
+var winston = require('winston'),
+	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	FacebookStrategy = require('passport-facebook').Strategy,
 	config = require('../config/ConfigController.server.js'),
