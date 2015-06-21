@@ -23,12 +23,12 @@ exports.oauthCallback = function(strategy) {
 	return function(req, res, next) {
 		passport.authenticate(strategy, function(err, user, redirectURL) {
 			if (err || !user) {
-				console.log('Auth error: ' + err);
+				winston.info('Auth error: ' + err);
 				return res.redirect('/?error=' + errors.get('login_failed'));
 			}
 			req.login(user, function(err) {
 				if (err) {
-					console.log('Login error: ' + err);
+					winston.info('Login error: ' + err);
 					return res.redirect('/?error=' + errors.get('login_failed'));
 				}
 

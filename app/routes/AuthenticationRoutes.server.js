@@ -51,11 +51,11 @@ module.exports = function(app) {
 
 	// Setting the linkedin oauth routes
 	app.route('/auth/linkedin').get(passport.authenticate('linkedin', { }));
-	app.route('/auth/twitter/callback').get(AuthenticationController.oauthCallback('linkedin'));
+	app.route('/auth/linkedin/callback').get(AuthenticationController.oauthCallback('linkedin'));
 
 	passport.use(new LinkedInStrategy({
-			consumerKey: config.linkedin.clientID,
-    		consumerSecret: config.linkedin.clientSecret,
+			clientID: config.linkedin.clientID,
+    		clientSecret: config.linkedin.clientSecret,
 	    	callbackURL: config.linkedin.callbackURL,
 	    	state: true
 		}, callback('linkedin')

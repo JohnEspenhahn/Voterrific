@@ -11,7 +11,7 @@ function scrubCongress(rep) {
 		
 		name: (rep.nickname || rep.first_name) + ' ' + (rep.middle_name ? rep.middle_name + ' ' : '') + rep.last_name,
 		party: rep.party,
-		chamber: 'US ' + rep.chamber.substring(0,1).toUpperCase() + rep.chamber.substring(1);
+		chamber: 'US ' + rep.chamber.substring(0,1).toUpperCase() + rep.chamber.substring(1),
 		district: rep.state + ' ' + (rep.district || ''),
 
 		photo_url: (rep.facebook_id ? 'https://graph.facebook.com/v2.3/' + rep.facebook_id + '/picture' : undefined),
@@ -27,7 +27,7 @@ function scrubOpenstates(rep) {
 	for (var key in rep.offices) {
 		var office = rep.offices[key];
 
-		if (office.type == 'capitol' && office.phone) {
+		if (office.type === 'capitol' && office.phone) {
 			phone = office.phone;
 			break;
 		} else if (office.phone) {
@@ -54,10 +54,8 @@ exports.scrub = function(provider, rep) {
 	switch (provider) {
 		case 'congress':
 			return scrubCongress(rep);
-			break;
 		case 'openstates':
 			return scrubOpenstates(rep);
-			break;
 		default:
 			winston.warn('Unhandled rep. provider: ' + provider);
 			return new Rep(rep);
