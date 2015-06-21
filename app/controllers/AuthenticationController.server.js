@@ -39,7 +39,7 @@ exports.oauthCallback = function(strategy) {
 };
 
 // Save the profile loaded by either Facebook or Google
-exports.savefgOAuthUserProfile = function(req, provider, providerUserProfile, done) {
+exports.saveOAuthUserProfile = function(req, provider, providerUserProfile, done) {
 	var searchQuery = {};
 	searchQuery['providers.' + provider] = providerUserProfile.providers[provider];
 	

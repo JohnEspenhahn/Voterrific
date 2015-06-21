@@ -49,6 +49,16 @@ module.exports = {
 		clientSecret : process.env.FACEBOOK_SECRET || 'de6ab9b117ae679904119eaa1b73af02',
 		callbackURL : '/auth/facebook/callback'
 	},
+	twitter : {
+		clientID : '',
+		clientSecret : '',
+		callbackURL : '/auth/twitter/callback'
+	},
+	linkedin : {
+		clientID : '75vx8i9ltastcm',
+		clientSecret : 'njbee2bqrNrwNJBu',
+		callbackURL : '/auth/linkedin/callback'
+	},
 	sunlight : {
 		apiKey: 'bee89768caac44f9bfd80b41cb8e262c'
 	},

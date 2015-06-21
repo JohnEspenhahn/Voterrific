@@ -6,6 +6,7 @@ var path = require('path'),
 	mongoose = require('mongoose'),
 	Row = mongoose.model('Row'),
 	User = mongoose.model('User'),
+	RepScrubber = require('./scrubbers/RepScrubber.server.js'),
 	config = require('./../config/ConfigController.server.js');
 
 function onError(res) {
@@ -14,7 +15,7 @@ function onError(res) {
 		res.end();
 	}
 }
-	
+
 // Get rows from database
 exports.getRows = function(req, res) {
 	if (req.user && req.user.hasDistricts()) {
@@ -50,10 +51,10 @@ exports.loadDistricts = function(req, res) {
 
 					req.user.districts.state = rep.state;
 					if (rep.chamber === 'upper') {
-						req.user.representatives.state_lower = rep;
+						req.user.representatives.state_lower = RepScrubber.scrub('openstates', rep);
 						req.user.districts.state_lower = rep.district;
 					} else if (rep.chamber === 'lower') {
-						req.user.representatives.state_upper = rep;
+						req.user.representatives.state_upper = RepScrubber.scrub('openstates', rep);
 						req.user.districts.state_upper = rep.district;
 					}
 				}
@@ -76,12 +77,12 @@ exports.loadDistricts = function(req, res) {
 						var rep = body.results[key];
 
 						if (rep.chamber === 'house') {
-							req.user.representatives.house = rep;
+							req.user.representatives.house = RepScrubber.scrub('congress', rep);
 							req.user.districts.house = rep.district;
 						} else if (rep.state_rank === 'junior') {
-							req.user.representatives.senate_junior = rep;
+							req.user.representatives.senate_junior = RepScrubber.scrub('congress', rep);
 						} else if (rep.state_rank === 'senior') {
-							req.user.representatives.senate_senior = rep;
+							req.user.representatives.senate_senior = RepScrubber.scrub('congress', rep);
 						}
 					}
 
