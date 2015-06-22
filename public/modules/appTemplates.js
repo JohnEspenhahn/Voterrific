@@ -57,37 +57,69 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "{{ content.name }}\r" +
     "\n" +
-    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\" height=\"24\" width=\"24\">"
+    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\">"
   );
 
 
-  $templateCache.put('views/templates/RepHead.html',
+  $templateCache.put('views/templates/RepHeader.html',
     "<img src=\"{{ content.photo_url || '/img/blank-profile.jpg' }}\" alt=\"Photo\" height=\"32\" width=\"32\">\r" +
     "\n" +
     "{{ content.name }}\r" +
     "\n" +
-    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\" height=\"24\" width=\"24\">"
+    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\" ng-if=\"row.isOpen\">"
   );
 
 
   $templateCache.put('views/templates/accordion/accordion-group.html',
     "<div class=\"panel panel-default\">\r" +
     "\n" +
-    "  <div class=\"panel-heading accordion-heading\" ng-if=\"row.isCloseable\">\r" +
+    "\r" +
     "\n" +
-    "    <h4 class=\"panel-title\">\r" +
+    "\t<!-- Header. Only shows if row.isClosable -->\r" +
     "\n" +
-    "      <a href=\"javascript:void(0)\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\" voterrific-accordion-transclude=\"heading\"></a>\r" +
+    "\t<div class=\"panel-heading accordion-heading\" ng-if=\"row.isCloseable\">\r" +
     "\n" +
-    "    </h4>\r" +
+    "\t\t<h4 class=\"panel-title\">\r" +
     "\n" +
-    "  </div>\r" +
+    "\t\t\t<a href=\"javascript:void(0)\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\">\r" +
     "\n" +
-    "  <div class=\"panel-collapse collapse\" collapse=\"!isOpen\">\r" +
+    "\t\t\t\t<div class=\"panel-heading\">\r" +
     "\n" +
-    "\t  <div class=\"panel-body\" ng-transclude></div>\r" +
+    "\t\t\t\t\t<span class=\"glyphicon small pull-left\" ng-class=\"{'glyphicon-minus': row.isOpen, 'glyphicon-plus': !row.isOpen}\"></span> \r" +
     "\n" +
-    "  </div>\r" +
+    "\t\t\t\t\t\r" +
+    "\n" +
+    "\t\t\t\t\t&nbsp;&nbsp;\r" +
+    "\n" +
+    "\t\t\t\t\t<voterrific-entry folder=\"'Header'\" row=\"row\" content=\"row.content\"></voterrific-entry>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "\t\t\t\t\t<span class=\"pull-right badge\"></span>\r" +
+    "\n" +
+    "\t\t\t\t</div>\r" +
+    "\n" +
+    "\t\t\t</a>\r" +
+    "\n" +
+    "\t\t</h4>\r" +
+    "\n" +
+    "\t</div>\r" +
+    "\n" +
+    "  \r" +
+    "\n" +
+    "  \t<!-- Body -->\r" +
+    "\n" +
+    "\t<div class=\"panel-collapse collapse\" collapse=\"!isOpen\">\r" +
+    "\n" +
+    "\t\t<div class=\"panel-body\">\r" +
+    "\n" +
+    "\t\t\t<voterrific-entry folder=\"'Body'\" row=\"row\" content=\"row.content\"></voterrific-entry>\r" +
+    "\n" +
+    "\t\t</div>\r" +
+    "\n" +
+    "\t</div>\r" +
+    "\n" +
+    "\r" +
     "\n" +
     "</div>"
   );

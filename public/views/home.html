@@ -9,22 +9,7 @@
 <div class="row">
 	<div class="col-xs-12 col-md-8 col-md-offset-2">		
 		<voterrific-accordion close-others="oneAtATime" ng-repeat="row in rows">
-			<voterrific-accordion-group is-open="row.isOpen" row="row">
-				
-				<!-- Header. Only shows if row.isClosable -->
-				<voterrific-accordion-heading row="row">
-					<div class="panel-heading">
-						<span class="glyphicon small pull-left" ng-class="{'glyphicon-minus': row.isOpen, 'glyphicon-plus': !row.isOpen}"></span> 
-						&nbsp;&nbsp;
-						<voterrific-entry folder="'Header'" control="row" content="row.content"></voterrific-entry>
-						<span class="pull-right badge"></span>
-					</div>
-				</voterrific-accordion-heading>
-				
-				<!-- Body -->
-				<voterrific-entry folder="'Body'" control="row" content="row.content"></voterrific-entry>
-				
-			</voterrific-accordion-group>
+			<voterrific-accordion-group is-open="row.isOpen" is-disabled="false" row="row"></voterrific-accordion-group>
 		</voterrific-accordion>
 	</div>
 </div>

@@ -44,18 +44,18 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 			$http.get('/loadDistricts/' + lat + '/' + lng)
 				.success(function(data) {
 					if (!data.error) {
-						Core.removeRow({ _id: $scope.control._id });
+						Core.removeRow({ _id: $scope.row._id });
 
 						console.log(data);
 						for (var key in data) {
 							Core.addFirstRow(data[key]);
 						}
 					} else {
-						$scope.error = 'Failed to load your representatives!';
+						Core.sendError('Failed to load your representatives!');
 					}
 				})
 				.error(function(data) {
-					$scope.error = 'Failed to load your representatives!';
+					Core.sendError('Failed to load your representatives!');
 				});
 		};
 
@@ -72,16 +72,16 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 						loadWithLatLng(location.lat, location.lng);
 				})
 				.error(function(data) {
-					$scope.error = 'Failed to load your representatives with the given address!';
+					Core.sendError('Failed to load your representatives with the given address!');
 				});
 		};
 		
 		// Start loading google maps api
 		uiGmapGoogleMapApi.then(function(maps) {
 			// TODO
-			if ($scope.control.type === 'Location') {
+			if ($scope.row.type === 'Location') {
 				console.log('Google maps ready for main location view');
-			} else if ($scope.control.type === 'LocationSetup') {
+			} else if ($scope.row.type === 'LocationSetup') {
 				console.log('Google maps ready for setup location view');
 			} else {
 				console.log('Google maps ready for other location view');

@@ -1,6 +1,11 @@
 /** For angular-bootstrap */
 .pagination, .carousel, .panel-title a, .panel-heading.accordion-toggle { cursor: pointer; }
 
+html {
+	overflow: -moz-scrollbars-vertical; 
+	overflow-y: scroll;
+}
+
 body {
 	background: #ececec;
 	color: #212121;
@@ -8,6 +13,10 @@ body {
 
 .navbar h2 {
 	margin-left: 10px;
+}
+
+.main-content {
+	padding-bottom: 70px;
 }
 
 h2 a, h3 a {

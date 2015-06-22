@@ -1,10 +1,26 @@
 <div class="panel panel-default">
-  <div class="panel-heading accordion-heading" ng-if="row.isCloseable">
-    <h4 class="panel-title">
-      <a href="javascript:void(0)" tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" voterrific-accordion-transclude="heading"></a>
-    </h4>
-  </div>
-  <div class="panel-collapse collapse" collapse="!isOpen">
-	  <div class="panel-body" ng-transclude></div>
-  </div>
+
+	<!-- Header. Only shows if row.isClosable -->
+	<div class="panel-heading accordion-heading" ng-if="row.isCloseable">
+		<h4 class="panel-title">
+			<a href="javascript:void(0)" tabindex="0" class="accordion-toggle" ng-click="toggleOpen()">
+				<div class="panel-heading">
+					<span class="glyphicon small pull-left" ng-class="{'glyphicon-minus': row.isOpen, 'glyphicon-plus': !row.isOpen}"></span> 
+					
+					&nbsp;&nbsp;
+					<voterrific-entry folder="'Header'" row="row" content="row.content"></voterrific-entry>
+
+					<span class="pull-right badge"></span>
+				</div>
+			</a>
+		</h4>
+	</div>
+  
+  	<!-- Body -->
+	<div class="panel-collapse collapse" collapse="!isOpen">
+		<div class="panel-body">
+			<voterrific-entry folder="'Body'" row="row" content="row.content"></voterrific-entry>
+		</div>
+	</div>
+
 </div>
