@@ -40,30 +40,39 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 		
 		$scope.getGeolocationErrorMss = function() { return (this.hasGeolocation() ? '' : 'Geolocation disabled by user'); };
 
+		var loadWithLatLng = function(lat, lng) {
+			$http.get('/loadDistricts/' + lat + '/' + lng)
+				.success(function(data) {
+					if (!data.error) {
+						Core.removeRow({ _id: $scope.control._id });
+
+						console.log(data);
+						for (var key in data) {
+							Core.addFirstRow(data[key]);
+						}
+					} else {
+						$scope.error = 'Failed to load your representatives!';
+					}
+				})
+				.error(function(data) {
+					$scope.error = 'Failed to load your representatives!';
+				});
+		};
+
 		// Send load districts with geolocaiton
 		$scope.withCurrentLocation = function() {
-			withGeoLocation(function(lat, lng) {
-				$http.get('/loadDistricts/' + lat + '/' + lng)
-					.success(function(data) {
-						console.log('Loaded distrcts');
-
-						Core.removeRow({ _id: $scope.control._id });
-					})
-					.error(function(data) {
-						$scope.error = 'Failed to load districts with your current location!';
-					});
-			});
+			withGeoLocation(loadWithLatLng);
 		};
 
 		// Send load districts with address
 		$scope.withAddress = function() {
-			$http.get('/loadDistricts/' + $scope.address)
+			$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent($scope.address) + '&key=AIzaSyD0d7h9MKnvO8J_aWUO1PdJP4hntSzRWfA')
 				.success(function(data) {
-					console.log('Loaded distrcts');
-					Core.removeRow({ _id: $scope.control._id });
+						var location = data.results[0].geometry.location;
+						loadWithLatLng(location.lat, location.lng);
 				})
 				.error(function(data) {
-					$scope.error = 'Failed to load districts with the given address!';
+					$scope.error = 'Failed to load your representatives with the given address!';
 				});
 		};
 		

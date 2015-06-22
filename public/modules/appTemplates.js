@@ -4,6 +4,8 @@ angular.module('app').run(['$templateCache', function($templateCache) {
   $templateCache.put('views/templates/LocationSetupBody.html',
     "<div class=\"text-center\" ng-controller=\"LocationController\">\r" +
     "\n" +
+    "\t<br />\r" +
+    "\n" +
     "\t<p>\r" +
     "\n" +
     "\t\tPlease provide your home address so we can determine your representatives.\r" +
@@ -45,6 +47,47 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\t\t</div>\r" +
     "\n" +
     "\t</form>\r" +
+    "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('views/templates/RepBody.html',
+    "<img src=\"{{ content.photo_url || '/img/blank-profile.jpg' }}\" alt=\"Photo\" height=\"64\" width=\"64\">\r" +
+    "\n" +
+    "{{ content.name }}\r" +
+    "\n" +
+    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\" height=\"24\" width=\"24\">"
+  );
+
+
+  $templateCache.put('views/templates/RepHead.html',
+    "<img src=\"{{ content.photo_url || '/img/blank-profile.jpg' }}\" alt=\"Photo\" height=\"32\" width=\"32\">\r" +
+    "\n" +
+    "{{ content.name }}\r" +
+    "\n" +
+    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\" height=\"24\" width=\"24\">"
+  );
+
+
+  $templateCache.put('views/templates/accordion/accordion-group.html',
+    "<div class=\"panel panel-default\">\r" +
+    "\n" +
+    "  <div class=\"panel-heading accordion-heading\" ng-if=\"row.isCloseable\">\r" +
+    "\n" +
+    "    <h4 class=\"panel-title\">\r" +
+    "\n" +
+    "      <a href=\"javascript:void(0)\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\" voterrific-accordion-transclude=\"heading\"></a>\r" +
+    "\n" +
+    "    </h4>\r" +
+    "\n" +
+    "  </div>\r" +
+    "\n" +
+    "  <div class=\"panel-collapse collapse\" collapse=\"!isOpen\">\r" +
+    "\n" +
+    "\t  <div class=\"panel-body\" ng-transclude></div>\r" +
+    "\n" +
+    "  </div>\r" +
     "\n" +
     "</div>"
   );

@@ -7,6 +7,7 @@ var path = require('path'),
 	Row = mongoose.model('Row'),
 	User = mongoose.model('User'),
 	RepScrubber = require('./scrubbers/RepScrubber.server.js'),
+	Errors = require('./ErrorsController.server.js'),
 	config = require('./../config/ConfigController.server.js');
 
 function onError(res) {
@@ -24,7 +25,7 @@ exports.getRows = function(req, res) {
 		res.json([ new Row({
 			type: 'LocationSetup',
 			isOpen: true,
-			isClosable: false
+			isCloseable: false
 		}) ]);
 	}
 
@@ -68,9 +69,11 @@ exports.loadDistricts = function(req, res) {
 		}
 	);
 
-	request('https://congress.api.sunlightfoundation.com/legislators/locate?latitude=' + lat + '&longitude=' + lng + '&apikey=' + config.sunlight.apiKey,
+	var url = 'http://congress.api.sunlightfoundation.com/legislators/locate?latitude=' + lat + '&longitude=' + lng + '&apikey=' + config.sunlight.apiKey;
+	console.log(url);
+	request(url,
 		function(err, sunlightRes, body) {
-			if (!err && sunlightRes.statusCode === 200) {
+			if (!err) {
 				body = JSON.parse(body);
 				if (body.count === 3) {
 					for (var key in body.results) {
@@ -94,7 +97,7 @@ exports.loadDistricts = function(req, res) {
 			}
 
 			// If got here an error occured
-			winston.error('An error occured while loading congress');
+			winston.error('An error occured while loading congress. ' + err);
 			onError(res);
 		}
 	);
@@ -112,29 +115,16 @@ exports.loadDistricts = function(req, res) {
 			}
 
 			// Send representatives
-			res.json( req.user.representatives );
+			var rows = [ 
+				new Row({ type: 'Rep', content: req.user.representatives.state_lower }),
+				new Row({ type: 'Rep', content: req.user.representatives.state_upper }),
+				new Row({ type: 'Rep', content: req.user.representatives.house }),
+				new Row({ type: 'Rep', content: req.user.representatives.senate_junior }),
+				new Row({ type: 'Rep', content: req.user.representatives.senate_senior })
+			];
+
+			res.json( rows );
 			res.end();
 		}
 	}
-};
-
-exports.loadDistrictsWithAddress = function(req, res) {
-	request('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent(req.params.address) + '&key=' + config.google.apiKey,
-		function(err, googleRes, body) {
-			if (!err && googleRes.statusCode === 200) {
-				body = JSON.parse(body);
-				if (body.status === 'OK') {
-					req.params.lat = body.results[0].geometry.location.lat;
-					req.params.lng = body.results[0].geometry.location.lng;
-
-					exports.loadDistricts(req, res);
-					return;
-				}
-			}
-
-			// If got here an error occured
-			winston.error('An error occured while geocoding ' + req.params.address);
-			onError(res);
-		}
-	);
 };

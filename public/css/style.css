@@ -48,11 +48,15 @@ h2 a:hover, h2 a:focus, h3 a:hover, h3 a:focus {
 	border-radius: 0px;
 }
 
-/** Don't want any text-decoration on the accordion heading */
-.panel-title .accordion-toggle {
-	text-decoration: none !important;
+.accordion-heading a {
+	text-decoration: none;
+	color: #333;
 }
- 
+
+.accordion-heading a:hover {
+	text-decoration: : none;
+}
+
 /** Logout button */
 .logout {
 	font-size: 16px;

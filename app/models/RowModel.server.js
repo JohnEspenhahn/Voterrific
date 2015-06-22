@@ -20,8 +20,7 @@ var RowSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
-	header: { },
-	body: { }
+	content: { }
 });
 
 mongoose.model('Row', RowSchema);

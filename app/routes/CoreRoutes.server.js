@@ -8,6 +8,5 @@ module.exports = function(app) {
 	app.get('/rows', CoreController.getRows);
 
 	app.get('/loadDistricts/:lat/:lng', CoreController.loadDistricts);
-	app.get('/loadDistricts/:address', CoreController.loadDistrictsWithAddress);
 	
 };

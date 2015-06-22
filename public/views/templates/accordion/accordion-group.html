@@ -1,0 +1,10 @@
+<div class="panel panel-default">
+  <div class="panel-heading accordion-heading" ng-if="row.isCloseable">
+    <h4 class="panel-title">
+      <a href="javascript:void(0)" tabindex="0" class="accordion-toggle" ng-click="toggleOpen()" voterrific-accordion-transclude="heading"></a>
+    </h4>
+  </div>
+  <div class="panel-collapse collapse" collapse="!isOpen">
+	  <div class="panel-body" ng-transclude></div>
+  </div>
+</div>
