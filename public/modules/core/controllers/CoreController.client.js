@@ -8,15 +8,14 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 		// Add error messages as they occur
 		$scope.$watch('error', function() {
 			if ($scope.error) {
-				var newAlert = { _id: $scope.error, type: 'danger', content: { text: $scope.error } };
-				if (!Core.hasAlert(newAlert)) Core.addAlert(newAlert);
+				Core.sendError($scope.error);
 			}
 	   });
 		
 		// Load error message from location search
 		var err = $location.search().error;
 		if (err) {
-			Errors.setScopeError($scope, err);
+			Core.sendError(err);
 			$location.search('error', null);
 		}
 	}
@@ -25,11 +24,7 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 // Main entry
 .directive('voterrificEntry', [ '$templateCache', '$sce', '$compile', function($templateCache, $sce, $compile) {
 	var linker = function(scope, element) {
-		var templateUrl = 'views/templates/' + scope.control.type + scope.folder + '.html';
-		
-		// Debug
-		console.log(templateUrl);
-		console.log(scope);
+		var templateUrl = 'views/templates/' + scope.row.type + scope.folder + '.html';
 		
 		element.html($templateCache.get(templateUrl));
 		$compile(element.contents())(scope);
@@ -38,11 +33,10 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 	return {
 		restrict:'E',
 		link: linker,
-		replace: true,
 		scope: {
 			folder: '=',
 			
-			control: '=',
+			row: '=',
 			content: '='
 			
 		}

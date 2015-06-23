@@ -7,6 +7,8 @@ module.exports = {
 		callbackURL: '/auth/facebook/callback'
 	},
 	jsResources: [
-		'/modules/**/*.js'
+		'/modules/*.js',
+		'/modules/*/*.js',
+		'/modules/*/*/**/*.js'
 	]
 };

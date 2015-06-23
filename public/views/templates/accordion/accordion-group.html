@@ -1,0 +1,23 @@
+<div class="panel panel-default">
+
+	<!-- Header. Only shows if row.isClosable -->
+	<div class="panel-heading accordion-heading" ng-if="row.isCloseable">
+		<a href="javascript:void(0)" tabindex="0" class="accordion-toggle" ng-click="toggleOpen($event)">
+			<div class="accordion-title">
+				<span class="pull-left badge"></span> 
+				
+				<voterrific-entry folder="'Header'" row="row" content="row.content"></voterrific-entry>
+
+				<span class="pull-right badge"></span>
+			</div>
+		</a>
+	</div>
+  
+  	<!-- Body -->
+	<div class="panel-collapse collapse" collapse="!isOpen">
+		<div class="panel-body">
+			<voterrific-entry folder="'Body'" row="row" content="row.content"></voterrific-entry>
+		</div>
+	</div>
+
+</div>

@@ -1,11 +1,12 @@
 <div class="text-center" ng-controller="LocationController">
+	<br />
 	<p>
 		Please provide your home address so we can determine your representatives.
 		<span class="glyphicon glyphicon-info-sign glyphicon-inverse" popover="Your address is not saved on our servers." popover-trigger="mouseenter" aria-hidden="true"></span>
 	</p>
-	<div class="geolocation" ng-if="hasGeolocation() && !geolocateError">
-		<p>
-			<button type="button" class="btn btn-default" ng-click="withCurrentLocation()">Use my current location</button>
+	<div class="geolocation">
+		<p style="display: inline-block;" popover="{{ getGeolocationErrorMss() }}" popover-trigger="mouseenter">
+			<button type="button" class="btn btn-default" ng-click="withCurrentLocation()" ng-disabled="!hasGeolocation()">Use my current location</button>
 		</p>
 		<p>
 			<b>OR</b>

@@ -1,5 +1,6 @@
 {
 	"linked_other" : "This provider is already linked to another account",
 	"linked_this"  : "This provider is already linked to this account",
-	"login_failed" : "Log in failed"
+	"login_failed" : "Log in failed",
+	"fatal"  : "A fatal error occured!"
 }

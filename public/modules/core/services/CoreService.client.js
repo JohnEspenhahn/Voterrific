@@ -101,6 +101,11 @@ angular.module('core').factory('Core', [ '$http', '$localStorage', '$timeout', f
 			
 			return -1;
 		},
+
+		sendError: function(mss) {
+			var newAlert = { _id: mss, type: 'danger', content: { text: mss } };
+			if (!this.hasAlert(newAlert)) this.addAlert(newAlert);
+		},
 		
 		/** Add an alert to the top of the alert array */
 		addAlert: function(alert) {

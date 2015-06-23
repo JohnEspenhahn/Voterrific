@@ -1,6 +1,7 @@
 'use strict';
 
 var mongoose = require('mongoose'),
+	winston = require('winston'),
 	User = mongoose.model('User'),
 	passport = require('passport'),
 	errors = require('./ErrorsController.server.js');
@@ -22,12 +23,12 @@ exports.oauthCallback = function(strategy) {
 	return function(req, res, next) {
 		passport.authenticate(strategy, function(err, user, redirectURL) {
 			if (err || !user) {
-				console.log('Auth error: ' + err);
+				winston.info('Auth error: ' + err);
 				return res.redirect('/?error=' + errors.get('login_failed'));
 			}
 			req.login(user, function(err) {
 				if (err) {
-					console.log('Login error: ' + err);
+					winston.info('Login error: ' + err);
 					return res.redirect('/?error=' + errors.get('login_failed'));
 				}
 
@@ -38,9 +39,9 @@ exports.oauthCallback = function(strategy) {
 };
 
 // Save the profile loaded by either Facebook or Google
-exports.savefgOAuthUserProfile = function(req, provider, providerUserProfile, done) {
+exports.saveOAuthUserProfile = function(req, provider, providerUserProfile, done) {
 	var searchQuery = {};
-	searchQuery['providers.' + provider] = providerUserProfile.providerId;
+	searchQuery['providers.' + provider] = providerUserProfile.providers[provider];
 	
 	if (!req.user) {
 		User.findOne(searchQuery, function(err, user) {
