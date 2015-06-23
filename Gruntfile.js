@@ -5,7 +5,7 @@ module.exports = function (grunt) {
 	var watchFiles = {
 		serverJS: ['Gruntfile.js', 'server.js', 'app/**/*.js', '!app/tests/'],
 		clientViews: ['public/modules/**/views/**/*.html', 'public/views/**/*.html'],
-		clientJS: ['public/js/*.js', 'public/modules/**/*.js', '!public/modules/appTemplates.js'],
+		clientJS: ['public/modules/*.js', 'public/modules/*/*.js', 'public/modules/*/*/**/*.js', '!public/modules/appTemplates.js'],
 		clientCSS: ['public/modules/**/*.css'],
 		mochaTests: ['app/tests/**/*.js']
 	};
@@ -30,7 +30,7 @@ module.exports = function (grunt) {
 		uglify : {
 			production : {
 				files : {
-					'public/dist/app.min.js' : watchFiles.clientJS.concat([ 'public/modules/appTemplates.js' ])
+					'public/dist/app.min.js' : watchFiles.clientJS
 				}
 			}
 		},
@@ -47,7 +47,7 @@ module.exports = function (grunt) {
 		watch : {
 			serverJS: {
 				files: watchFiles.serverJS,
-				tasks: ['jshint', 'ngtemplates'],
+				tasks: ['jshint', 'uglify', 'ngtemplates'],
 				options: {
 					livereload: true
 				}
