@@ -20,7 +20,7 @@ function onError(res) {
 // Get rows from database
 exports.getRows = function(req, res) {
 	if (req.user && req.user.hasDistricts()) {
-		res.json([]);
+		exports.loadDistricts(req, res);
 	} else {
 		res.json([ new Row({
 			type: 'LocationSetup',
@@ -43,6 +43,43 @@ exports.loadDistricts = function(req, res) {
 
 	if (!req.user) req.user = new User({ displayName: '', providers: { temp: 1 } });
 
+	// Called to check if done loading
+	var doneLoading = function() {
+		if (!res.headersSent && req.user.hasDistricts()) {
+			// Save updated user if not temp
+			if (!req.user.providers.temp) {
+				req.user.markModified('representatives');
+				req.user.markModified('districts');
+
+				winston.info('Saving');
+				req.user.save(function(err) {
+					if (err) winston.error('Failed to save updated user after loading districts');
+				});
+			}
+
+			// Send representatives
+			var rows = [ 
+				new Row({ type: 'Rep', content: req.user.representatives.senate_senior }),
+				new Row({ type: 'Rep', content: req.user.representatives.senate_junior }),
+				new Row({ type: 'Rep', content: req.user.representatives.house }),
+				new Row({ type: 'Rep', content: req.user.representatives.state_upper }),
+				new Row({ type: 'Rep', content: req.user.representatives.state_lower })
+			];
+
+			res.json( rows );
+			res.end();
+
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	// Check if already loaded
+	var preloaded = doneLoading();
+	if (preloaded) return;
+
+	// Get state data
 	request('http://openstates.org/api/v1/legislators/geo/?lat=' + lat + '&long=' + lng + '&apikey=' + config.sunlight.apiKey,
 		function(err, sunlightRes, body) {
 			if (!err && sunlightRes.statusCode === 200) {
@@ -69,9 +106,8 @@ exports.loadDistricts = function(req, res) {
 		}
 	);
 
-	var url = 'http://congress.api.sunlightfoundation.com/legislators/locate?latitude=' + lat + '&longitude=' + lng + '&apikey=' + config.sunlight.apiKey;
-	console.log(url);
-	request(url,
+	// Get national congress
+	request('http://congress.api.sunlightfoundation.com/legislators/locate?latitude=' + lat + '&longitude=' + lng + '&apikey=' + config.sunlight.apiKey,
 		function(err, sunlightRes, body) {
 			if (!err) {
 				body = JSON.parse(body);
@@ -101,30 +137,4 @@ exports.loadDistricts = function(req, res) {
 			onError(res);
 		}
 	);
-
-	function doneLoading() {
-		if (!res.headersSent && req.user.hasDistricts()) {
-			// Save updated user if not temp
-			if (!req.user.providers.temp) {
-				req.user.markModified('representatives');
-				req.user.markModified('districts');
-
-				req.user.save(function(err) {
-					if (err) winston.error('Failed to save updated user after loading districts');
-				});
-			}
-
-			// Send representatives
-			var rows = [ 
-				new Row({ type: 'Rep', content: req.user.representatives.state_lower }),
-				new Row({ type: 'Rep', content: req.user.representatives.state_upper }),
-				new Row({ type: 'Rep', content: req.user.representatives.house }),
-				new Row({ type: 'Rep', content: req.user.representatives.senate_junior }),
-				new Row({ type: 'Rep', content: req.user.representatives.senate_senior })
-			];
-
-			res.json( rows );
-			res.end();
-		}
-	}
 };

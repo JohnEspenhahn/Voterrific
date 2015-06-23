@@ -53,20 +53,36 @@ angular.module('app').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/templates/RepBody.html',
-    "<img src=\"{{ content.photo_url || '/img/blank-profile.jpg' }}\" alt=\"Photo\" height=\"64\" width=\"64\">\r" +
+    "<img src=\"{{ content.photo_url || '/img/blank-profile.jpg' }}\" alt=\"Photo\" height=\"64\">\r" +
     "\n" +
     "{{ content.name }}\r" +
     "\n" +
-    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\">"
+    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\">\r" +
+    "\n" +
+    "<br />\r" +
+    "\n" +
+    "{{ content.district }} {{ content.chamber }}"
   );
 
 
   $templateCache.put('views/templates/RepHeader.html',
-    "<img src=\"{{ content.photo_url || '/img/blank-profile.jpg' }}\" alt=\"Photo\" height=\"32\" width=\"32\">\r" +
+    "<div class=\"rep-header\">\r" +
     "\n" +
-    "{{ content.name }}\r" +
+    "\t<div class=\"img\" style=\"background-image: url('{{ content.photo_url || '/img/blank-profile.jpg' }}');\"></div>\r" +
     "\n" +
-    "<img src=\"{{ '/img/' + content.party + '.png' }}\" alt=\"{{ content.party }}\" ng-if=\"row.isOpen\">"
+    "\t\r" +
+    "\n" +
+    "\t<div class=\"title\">\r" +
+    "\n" +
+    "\t\t{{ content.name }}\r" +
+    "\n" +
+    "\t\t<br />\r" +
+    "\n" +
+    "\t\t<small>{{ content.chamber }}, {{ content.district }}</small>\r" +
+    "\n" +
+    "\t</div>\r" +
+    "\n" +
+    "</div>"
   );
 
 
@@ -79,29 +95,23 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "\n" +
     "\t<div class=\"panel-heading accordion-heading\" ng-if=\"row.isCloseable\">\r" +
     "\n" +
-    "\t\t<h4 class=\"panel-title\">\r" +
+    "\t\t<a href=\"javascript:void(0)\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen($event)\">\r" +
     "\n" +
-    "\t\t\t<a href=\"javascript:void(0)\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\">\r" +
+    "\t\t\t<div class=\"accordion-title\">\r" +
     "\n" +
-    "\t\t\t\t<div class=\"panel-heading\">\r" +
+    "\t\t\t\t<span class=\"pull-left badge\"></span> \r" +
     "\n" +
-    "\t\t\t\t\t<span class=\"glyphicon small pull-left\" ng-class=\"{'glyphicon-minus': row.isOpen, 'glyphicon-plus': !row.isOpen}\"></span> \r" +
+    "\t\t\t\t\r" +
     "\n" +
-    "\t\t\t\t\t\r" +
-    "\n" +
-    "\t\t\t\t\t&nbsp;&nbsp;\r" +
-    "\n" +
-    "\t\t\t\t\t<voterrific-entry folder=\"'Header'\" row=\"row\" content=\"row.content\"></voterrific-entry>\r" +
+    "\t\t\t\t<voterrific-entry folder=\"'Header'\" row=\"row\" content=\"row.content\"></voterrific-entry>\r" +
     "\n" +
     "\r" +
     "\n" +
-    "\t\t\t\t\t<span class=\"pull-right badge\"></span>\r" +
+    "\t\t\t\t<span class=\"pull-right badge\"></span>\r" +
     "\n" +
-    "\t\t\t\t</div>\r" +
+    "\t\t\t</div>\r" +
     "\n" +
-    "\t\t\t</a>\r" +
-    "\n" +
-    "\t\t</h4>\r" +
+    "\t\t</a>\r" +
     "\n" +
     "\t</div>\r" +
     "\n" +

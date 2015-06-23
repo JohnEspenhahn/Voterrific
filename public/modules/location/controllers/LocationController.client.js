@@ -48,7 +48,7 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 
 						console.log(data);
 						for (var key in data) {
-							Core.addFirstRow(data[key]);
+							Core.addLastRow(data[key]);
 						}
 					} else {
 						Core.sendError('Failed to load your representatives!');

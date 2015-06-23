@@ -24,8 +24,6 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 // Main entry
 .directive('voterrificEntry', [ '$templateCache', '$sce', '$compile', function($templateCache, $sce, $compile) {
 	var linker = function(scope, element) {
-		console.log(scope);
-
 		var templateUrl = 'views/templates/' + scope.row.type + scope.folder + '.html';
 		
 		element.html($templateCache.get(templateUrl));
@@ -35,7 +33,6 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 	return {
 		restrict:'E',
 		link: linker,
-		replace: true,
 		scope: {
 			folder: '=',
 			

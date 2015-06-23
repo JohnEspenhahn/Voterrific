@@ -2,14 +2,19 @@
 
 angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
 
-.constant('voterrificAccordionConfig', {
-  closeOthers: true
-})
-
-.controller('VoterrificAccordionController', ['$scope', '$attrs', 'voterrificAccordionConfig', function ($scope, $attrs, accordionConfig) {
+.controller('VoterrificAccordionController', ['$scope', '$attrs', function ($scope, $attrs) {
 
   // This array keeps track of the accordion groups
   this.groups = [];
+
+  // Ensure that all the groups in this accordion are closed, unless close-others explicitly says not to
+  this.closeOthers = function(openGroup) {
+    angular.forEach(this.groups, function (group) {
+      if ( group !== openGroup ) {
+        group.isOpen = false;
+      }
+    });
+  };
 
   // This is called from the accordion-group directive to add itself to the accordion
   this.addGroup = function(groupScope) {
@@ -38,7 +43,6 @@ angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
     restrict:'EA',
     controller:'VoterrificAccordionController',
     transclude: true,
-    replace: false,
     templateUrl: 'template/accordion/accordion.html'
   };
 })
@@ -49,7 +53,6 @@ angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
     require:'^voterrificAccordion',         // We need this directive to be inside an accordion
     restrict:'EA',
     transclude:false,
-    replace:true,
     templateUrl:'views/templates/accordion/accordion-group.html',
     scope: {
       isOpen: '=?',
@@ -59,9 +62,14 @@ angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
     link: function(scope, element, attrs, accordionCtrl) {
       accordionCtrl.addGroup(scope);
 
-      scope.toggleOpen = function() {
+      scope.toggleOpen = function(event) {
+        console.log(event);
         if ( !scope.isDisabled ) {
           scope.isOpen = !scope.isOpen;
+
+          if (event.shiftKey) {
+            accordionCtrl.closeOthers(scope);
+          }
         }
       };
     }
