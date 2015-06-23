@@ -41,7 +41,7 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 		$scope.getGeolocationErrorMss = function() { return (this.hasGeolocation() ? '' : 'Geolocation disabled by user'); };
 
 		var loadWithLatLng = function(lat, lng) {
-			$http.get('/loadDistricts/' + lat + '/' + lng)
+			$http.get('/loadRepresentatives/' + lat + '/' + lng)
 				.success(function(data) {
 					if (!data.error) {
 						Core.removeRow({ _id: $scope.row._id });

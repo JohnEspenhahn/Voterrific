@@ -1,7 +1,7 @@
 'use strict';
 
 // Front end link to backed AccordionRowRoutes
-angular.module('core').factory('Core', [ '$http', '$localStorage', '$timeout', function ($http, $localStorage, $timeout) {	
+angular.module('core').factory('Core', [ '$http', '$localStorage', '$timeout', function ($http, $localStorage, $timeout) {
 	return {
 		rows: [ ],
 		alerts: [ ],

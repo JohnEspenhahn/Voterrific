@@ -25,6 +25,8 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 .directive('voterrificEntry', [ '$templateCache', '$sce', '$compile', function($templateCache, $sce, $compile) {
 	var linker = function(scope, element) {
 		var templateUrl = 'views/templates/' + scope.row.type + scope.folder + '.html';
+
+		console.log('Entry ' + scope.row.type);
 		
 		element.html($templateCache.get(templateUrl));
 		$compile(element.contents())(scope);

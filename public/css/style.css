@@ -48,6 +48,10 @@ h2 a:hover, h2 a:focus, h3 a:hover, h3 a:focus {
 }
 
 /** Accordion */
+.accordion {
+	width: 100%;
+}
+
 .accordion-group {
 	display: block;
 }
@@ -102,7 +106,8 @@ h2 a:hover, h2 a:focus, h3 a:hover, h3 a:focus {
 	font-size: 16px;
 }
 
-.rep-header {
+.rep-body, .rep-header, 
+.funds-header, .funds-body {
 	display: -webkit-flex;
 	display: flex;
 
@@ -122,7 +127,13 @@ h2 a:hover, h2 a:focus, h3 a:hover, h3 a:focus {
   	margin-top: 14px;
 }
 
-.rep-header .title-container .title {
+.rep-header small.title {
+	margin: 0px 12px;
+	font-style: italic;
+}
+
+.rep-body .title, .rep-header .title,
+.funds-header .title {
 	margin-left: 10px;
 	margin-top: 8px;
 
@@ -130,8 +141,19 @@ h2 a:hover, h2 a:focus, h3 a:hover, h3 a:focus {
 	white-space: nowrap;
 }
 
-.rep-header .title-container .party {
+.rep-body small.title, .rep-header .party {
 	color: #555;
 	font-size: 75%;	
 	display: inline-block;
+}
+
+.rep-body small.title {
+	margin: 0px 14px;
+}
+.rep-body .contact {
+	margin-left: 10px;
+}
+
+.funds-header .title {
+	margin-top: 4px;
 }

@@ -6,21 +6,15 @@ var path = require('path'),
 	mongoose = require('mongoose'),
 	Row = mongoose.model('Row'),
 	User = mongoose.model('User'),
+	Rep = mongoose.model('Rep'),
 	RepScrubber = require('./scrubbers/RepScrubber.server.js'),
 	Errors = require('./ErrorsController.server.js'),
 	config = require('./../config/ConfigController.server.js');
 
-function onError(res) {
-	if (!res.headersSent) {
-		res.json( { error: true } );
-		res.end();
-	}
-}
-
 // Get rows from database
 exports.getRows = function(req, res) {
-	if (req.user && req.user.hasDistricts()) {
-		exports.loadDistricts(req, res);
+	if (req.user && req.user.hasRepresentatives()) {
+		exports.loadRepresentatives(req, res);
 	} else {
 		res.json([ new Row({
 			type: 'LocationSetup',
@@ -28,55 +22,82 @@ exports.getRows = function(req, res) {
 			isCloseable: false
 		}) ]);
 	}
-
-	/*
-	Row.find({}, function(err, rows) {
-		if (err) return res.set(400).send(err);
-		res.json(rows);
-	});
-	*/
 };
 
-exports.loadDistricts = function(req, res) {
+/** 
+ * On error while trying to load
+ */
+function onError(res) {
+	if (!res.headersSent) {
+		res.json( { error: true } );
+		res.end();
+	}
+}
+
+/**
+ * Called to check if done loading
+ */
+function doneLoading(user, res) {
+	if (!res.headersSent && user.hasRepresentatives()) {
+		// Save updated user if not temp
+		if (!user.providers.temp) {
+			user.markModified('representatives');
+			user.markModified('districts');
+
+			winston.info('Saving');
+			user.save(function(err) {
+				if (err) winston.error('Failed to save updated user after loading');
+			});
+		}
+
+		// Send representatives
+		var reps = user.getRepresentatives(function(reps) {
+			if (reps.error) {
+				onError(res);
+			} else {
+				var rows = [ ];
+				for (var key in reps) {
+					rows.push(new Row({ type: 'Rep', content: reps[key] }));
+				}
+
+				res.json( rows );
+				res.end();
+			}
+		});
+
+		return true;
+	} else {
+		return false;
+	}
+}
+
+/** 
+ * Properly save the given representative
+ * @param {User} use The user to save for
+ * @param {String} field The field name of the representative
+ * @param {Rep} rep The representative
+ */
+function saveRep(user, field, rep) {
+	user.representatives[field] = rep._id;
+
+	rep.save(function(err) {
+		if (err) winston.error('Failed to save representative after loading');
+	});
+}
+
+/** 
+ * Load districts at a given latitude and longitude
+ * :lat
+ * :lng
+ */
+exports.loadRepresentatives = function(req, res) {
 	var lat = req.params.lat,
 		lng = req.params.lng;
 
 	if (!req.user) req.user = new User({ displayName: '', providers: { temp: 1 } });
 
-	// Called to check if done loading
-	var doneLoading = function() {
-		if (!res.headersSent && req.user.hasDistricts()) {
-			// Save updated user if not temp
-			if (!req.user.providers.temp) {
-				req.user.markModified('representatives');
-				req.user.markModified('districts');
-
-				winston.info('Saving');
-				req.user.save(function(err) {
-					if (err) winston.error('Failed to save updated user after loading districts');
-				});
-			}
-
-			// Send representatives
-			var rows = [ 
-				new Row({ type: 'Rep', content: req.user.representatives.senate_senior }),
-				new Row({ type: 'Rep', content: req.user.representatives.senate_junior }),
-				new Row({ type: 'Rep', content: req.user.representatives.house }),
-				new Row({ type: 'Rep', content: req.user.representatives.state_upper }),
-				new Row({ type: 'Rep', content: req.user.representatives.state_lower })
-			];
-
-			res.json( rows );
-			res.end();
-
-			return true;
-		} else {
-			return false;
-		}
-	};
-
 	// Check if already loaded
-	var preloaded = doneLoading();
+	var preloaded = doneLoading(req.user, res);
 	if (preloaded) return;
 
 	// Get state data
@@ -88,18 +109,14 @@ exports.loadDistricts = function(req, res) {
 				body = JSON.parse(body);
 				for (var key in body) {
 					var rep = body[key];
-
-					req.user.districts.state = rep.state;
 					if (rep.chamber === 'upper') {
-						req.user.representatives.state_lower = RepScrubber.scrub('openstates', rep);
-						req.user.districts.state_lower = rep.district;
+						saveRep(req.user, 'state_lower', RepScrubber.scrub('openstates', rep));
 					} else if (rep.chamber === 'lower') {
-						req.user.representatives.state_upper = RepScrubber.scrub('openstates', rep);
-						req.user.districts.state_upper = rep.district;
+						saveRep(req.user, 'state_upper', RepScrubber.scrub('openstates', rep));
 					}
 				}
 
-				doneLoading();
+				doneLoading(req.user, res);
 				return;
 			}
 			
@@ -118,18 +135,16 @@ exports.loadDistricts = function(req, res) {
 				if (body.count === 3) {
 					for (var key in body.results) {
 						var rep = body.results[key];
-
 						if (rep.chamber === 'house') {
-							req.user.representatives.house = RepScrubber.scrub('congress', rep);
-							req.user.districts.house = rep.district;
+							saveRep(req.user, 'house', RepScrubber.scrub('congress', rep));
 						} else if (rep.state_rank === 'junior') {
-							req.user.representatives.senate_junior = RepScrubber.scrub('congress', rep);
+							saveRep(req.user, 'senate_junior', RepScrubber.scrub('congress', rep));
 						} else if (rep.state_rank === 'senior') {
-							req.user.representatives.senate_senior = RepScrubber.scrub('congress', rep);
+							saveRep(req.user, 'senate_senior', RepScrubber.scrub('congress', rep));
 						}
 					}
 
-					doneLoading();
+					doneLoading(req.user, res);
 					return;
 				} else {
 					winston.error('Expected 3 results from congress api, but got ' + body.count);
@@ -141,4 +156,12 @@ exports.loadDistricts = function(req, res) {
 			onError(res);
 		}
 	);
+};
+
+/** 
+ * Load funds for a given representative
+ * :repId The id of the representative on our server
+ */
+exports.loadFunds = function(req, res) {
+	res.json({ funds: 0 });
 };

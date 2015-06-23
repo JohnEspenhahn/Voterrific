@@ -96,7 +96,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks('grunt-angular-templates');
 	grunt.loadNpmTasks('grunt-auto-install');
 
-	grunt.registerTask('default', [ 'jshint', 'concurrent' ]);
+	grunt.registerTask('default', [ 'jshint', 'concurrent', 'ngtemplates' ]);
 	grunt.registerTask('build', [ 'auto_install', 'uglify', 'ngtemplates' ]);
 
 };

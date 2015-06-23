@@ -10,13 +10,15 @@ var RepSchema = new Schema({
 	name: { type: String, required: true },
 	party: { type: String, enum: [ 'D', 'R', 'I' ], required: true },
 	term: { type: String },
-	// gender: { type: String, enum: [ 'M', 'F', 'O' ], required: true },
 	chamber: { type: String, required: true },
 	district: { type: String },
 
 	photo_url: { type: String },
 	contact_url: { type: String },
-	phone: { type: String }
+	phone: { type: String },
+
+	// DEBUG
+	funds: { type: Number, default: 100000 }
 });
 
 RepSchema.index( { bioguide_id: 1, transparencydata_id: 1 } , { unique: true } );
