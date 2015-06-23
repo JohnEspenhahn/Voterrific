@@ -62,13 +62,13 @@ angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
     link: function(scope, element, attrs, accordionCtrl) {
       accordionCtrl.addGroup(scope);
 
+      // Double click to toggle others
       var lastClick = Date.now();
       scope.toggleOpen = function(event) {
         if (!scope.isDisabled) {
           var now = Date.now();
-          if (now - lastClick < 300) {
+          if (now - lastClick < 250) {
             console.log('Double click');
-            scope.isOpen = true;
             accordionCtrl.closeOthers(scope);
           } else {
             scope.isOpen = !scope.isOpen;
