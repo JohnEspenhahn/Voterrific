@@ -9,6 +9,7 @@ var RepSchema = new Schema({
 
 	name: { type: String, required: true },
 	party: { type: String, enum: [ 'D', 'R', 'I' ], required: true },
+	term: { type: String },
 	// gender: { type: String, enum: [ 'M', 'F', 'O' ], required: true },
 	chamber: { type: String, required: true },
 	district: { type: String },

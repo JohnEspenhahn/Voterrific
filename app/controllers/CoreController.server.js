@@ -80,7 +80,9 @@ exports.loadDistricts = function(req, res) {
 	if (preloaded) return;
 
 	// Get state data
-	request('http://openstates.org/api/v1/legislators/geo/?lat=' + lat + '&long=' + lng + '&apikey=' + config.sunlight.apiKey,
+	var url = 'http://openstates.org/api/v1/legislators/geo/?lat=' + lat + '&long=' + lng + '&apikey=' + config.sunlight.apiKey;
+	console.log(url);
+	request(url,
 		function(err, sunlightRes, body) {
 			if (!err && sunlightRes.statusCode === 200) {
 				body = JSON.parse(body);
@@ -107,7 +109,9 @@ exports.loadDistricts = function(req, res) {
 	);
 
 	// Get national congress
-	request('http://congress.api.sunlightfoundation.com/legislators/locate?latitude=' + lat + '&longitude=' + lng + '&apikey=' + config.sunlight.apiKey,
+	url = 'http://congress.api.sunlightfoundation.com/legislators/locate?latitude=' + lat + '&longitude=' + lng + '&apikey=' + config.sunlight.apiKey;
+	console.log(url);
+	request(url,
 		function(err, sunlightRes, body) {
 			if (!err) {
 				body = JSON.parse(body);

@@ -11,6 +11,7 @@ function scrubCongress(rep) {
 		
 		name: (rep.nickname || rep.first_name) + ' ' + (rep.middle_name ? rep.middle_name + ' ' : '') + rep.last_name,
 		party: rep.party,
+		term: new Date(rep.term_start).getFullYear() + '-' + new Date(rep.term_end).getFullYear(),
 		chamber: 'US ' + rep.chamber.substring(0,1).toUpperCase() + rep.chamber.substring(1),
 		district: rep.state + ' ' + (rep.district || ''),
 
@@ -35,12 +36,24 @@ function scrubOpenstates(rep) {
 		}
 	}
 
+	// Get the term for this rep
+	var term;
+	for (key in rep.roles) {
+		var role = rep.roles[key];
+
+		if (role.type === 'member' && role.term) {
+			term = role.term;
+			break;
+		}
+	}
+
 	// Create rep
 	return new Rep({
 		transparencydata_id: rep.transparencydata_id,
 
 		name: rep.full_name,
 		party: rep.party.substring(0,1).toUpperCase(),
+		term: term,
 		chamber: rep.state.toUpperCase() + ' ' + rep.chamber.substring(0,1).toUpperCase() + rep.chamber.substring(1),
 		district: rep.district,
 
