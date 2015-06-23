@@ -43,29 +43,34 @@ h2 a:hover, h2 a:focus, h3 a:hover, h3 a:focus {
 	margin-bottom: 6px;
 }
 
+/** Accordion */
+.accordion-group {
+	display: block;
+}
+
 /** Reduce space between panels */
-.panel-group {
+.accordion-group .panel-group {
 	margin-bottom: 0px;
 }
 
 /** Square panels */
-.panel-group .panel {
+.accordion-group .panel {
 	border-radius: 0px;
 }
 
 /** Add margin when group is open */
-.group-open .panel {
+.accordion-group.group-open {
 	margin-bottom: 7px;
 	margin-top: 7px;
 }
 
 /** No top space for first child */
-.group-open:first-child .panel {
+.accordion-group.group-open:first-child {
 	margin-top: 0px;
 }
 
 /** Allow us to move heading to link to make ensure accordion heading click-able */
-.panel .accordion-heading {
+.accordion-group .accordion-heading {
 	padding: 0 !important;
 	
 	background: white;
@@ -81,7 +86,7 @@ h2 a:hover, h2 a:focus, h3 a:hover, h3 a:focus {
 }
 
 .accordion-heading a:hover {
-	text-decoration: : none;
+	text-decoration: none;
 }
 
 .accordion-title {
