@@ -71,7 +71,7 @@ UserSchema.methods.getRepresentatives = function(callback) {
 UserSchema.methods.getRepresentative = function(field, reps, callback) {
 	var _this = this;
 	Rep.findById(this.representatives[field], function(err, rep) {
-		if (err) reps.error = true;
+		if (err || !rep) reps.error = true;
 		else reps[field] = rep;
 
 		if (reps.error || _this.hasRepresentatives(reps)) callback(reps);

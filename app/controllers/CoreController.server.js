@@ -42,7 +42,6 @@ function doneLoading(user, res) {
 		// Save updated user if not temp
 		if (!user.providers.temp) {
 			user.markModified('representatives');
-			user.markModified('districts');
 
 			winston.info('Saving');
 			user.save(function(err) {
@@ -55,12 +54,13 @@ function doneLoading(user, res) {
 			if (reps.error) {
 				onError(res);
 			} else {
-				var rows = [ ];
-				for (var key in reps) {
-					rows.push(new Row({ type: 'Rep', content: reps[key] }));
-				}
-
-				res.json( rows );
+				res.json([
+					new Row({ type: 'Rep', content: reps.senate_senior }),
+					new Row({ type: 'Rep', content: reps.senate_junior }),
+					new Row({ type: 'Rep', content: reps.house }),
+					new Row({ type: 'Rep', content: reps.state_upper }),
+					new Row({ type: 'Rep', content: reps.state_lower })
+				]);
 				res.end();
 			}
 		});
@@ -76,12 +76,18 @@ function doneLoading(user, res) {
  * @param {User} use The user to save for
  * @param {String} field The field name of the representative
  * @param {Rep} rep The representative
+ * @param {Response} res The response object
  */
-function saveRep(user, field, rep) {
-	user.representatives[field] = rep._id;
-
-	rep.save(function(err) {
-		if (err) winston.error('Failed to save representative after loading');
+function saveRep(user, field, rep, res) {
+	rep.saveUnique(function(err, id) {
+		if (err) {
+			winston.error('Failed to save representative after loading.');
+			winston.error(err);
+			onError(res);
+		} else {
+			user.representatives[field] = id;
+			doneLoading(user, res);
+		}
 	});
 }
 
@@ -110,13 +116,11 @@ exports.loadRepresentatives = function(req, res) {
 				for (var key in body) {
 					var rep = body[key];
 					if (rep.chamber === 'upper') {
-						saveRep(req.user, 'state_lower', RepScrubber.scrub('openstates', rep));
+						saveRep(req.user, 'state_upper', RepScrubber.scrub('openstates', rep), res);
 					} else if (rep.chamber === 'lower') {
-						saveRep(req.user, 'state_upper', RepScrubber.scrub('openstates', rep));
+						saveRep(req.user, 'state_lower', RepScrubber.scrub('openstates', rep), res);
 					}
 				}
-
-				doneLoading(req.user, res);
 				return;
 			}
 			
@@ -136,15 +140,13 @@ exports.loadRepresentatives = function(req, res) {
 					for (var key in body.results) {
 						var rep = body.results[key];
 						if (rep.chamber === 'house') {
-							saveRep(req.user, 'house', RepScrubber.scrub('congress', rep));
+							saveRep(req.user, 'house', RepScrubber.scrub('congress', rep), res);
 						} else if (rep.state_rank === 'junior') {
-							saveRep(req.user, 'senate_junior', RepScrubber.scrub('congress', rep));
+							saveRep(req.user, 'senate_junior', RepScrubber.scrub('congress', rep), res);
 						} else if (rep.state_rank === 'senior') {
-							saveRep(req.user, 'senate_senior', RepScrubber.scrub('congress', rep));
+							saveRep(req.user, 'senate_senior', RepScrubber.scrub('congress', rep), res);
 						}
 					}
-
-					doneLoading(req.user, res);
 					return;
 				} else {
 					winston.error('Expected 3 results from congress api, but got ' + body.count);

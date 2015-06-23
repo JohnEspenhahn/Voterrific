@@ -34,7 +34,8 @@ winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, { 
 	colorize: true, 
 	leve: 'debug',
-	handleExceptions: true
+	handleExceptions: true,
+	humanReadableUnhandledException: true
 });
 winston.add(winston.transports.File, { 
 	filename: config.log.folder + '/' + config.log.default,
@@ -44,8 +45,10 @@ winston.add(winston.transports.File, {
 });
 winston.handleExceptions(new winston.transports.File({ 
 	filename: config.log.folder + '/' + config.log.exceptions,
-	prettyPrint: true,
-	json: false
+	humanReadableUnhandledException: true,
+	handleExceptions: true,
+	json: false,
+	colorize: true
 }));
 
 // Setup app
