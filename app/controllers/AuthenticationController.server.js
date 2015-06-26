@@ -24,6 +24,8 @@ exports.oauthCallback = function(strategy) {
 		console.log('Authenticating ' + strategy);
 
 		passport.authenticate(strategy, function(err, user, redirectURL) {
+			console.log('In authenticating ' + strategy);
+
 			if (err || !user) {
 				winston.info('Auth error: ' + err);
 				return res.redirect('/?error=' + errors.get('login_failed'));
@@ -34,6 +36,7 @@ exports.oauthCallback = function(strategy) {
 					return res.redirect('/?error=' + errors.get('login_failed'));
 				}
 
+				console.log('Authentication success!');
 				return res.redirect(redirectURL || '/');
 			});
 		})(req, res, next);
