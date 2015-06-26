@@ -24,12 +24,10 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 // Main entry
 .directive('voterrificEntry', [ '$templateCache', '$sce', '$compile', function($templateCache, $sce, $compile) {
 	var linker = function(scope, element) {
-		if (!scope.row) {
-			console.log(scope);
-		}
-
 		var templateUrl = 'views/templates/' + scope.row.type + scope.folder + '.html';
 		
+		console.log('Loading template: ' + templateUrl);
+
 		element.html($templateCache.get(templateUrl));
 		$compile(element.contents())(scope);
     };

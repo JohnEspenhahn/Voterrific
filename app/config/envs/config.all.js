@@ -66,6 +66,7 @@ module.exports = {
 	cssResources : [
 		'/lib/bootstrap/dist/css/bootstrap.css',
 		'/lib/bootstrap/dist/css/bootstrap-theme.min.css',
+		'/lib/font-awesome/css/font-awesome.min.css',
 		'/css/**/*.css'
 	],
 	

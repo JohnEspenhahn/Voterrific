@@ -1,79 +1,45 @@
 'use strict';
 
-angular.module('location').controller('LocationController', [ '$http', '$window', '$scope', 'uiGmapGoogleMapApi', 'Core',
-	function($http, $window, $scope, uiGmapGoogleMapApi, Core) {
-		// Ensure we have geolocation before calling functions that need it
-		$scope.geolocateError = false;
-		var lat, lng, toGeoLocate = [];
-		function withGeoLocation(callback) {
-			if (!$scope.geolocateError && lat && lng) {
-				callback(lat, lng);
-			} else if (toGeoLocate) {
-				toGeoLocate.push(callback);
-			}
-		}
-		
+angular.module('location').controller('LocationController', [ '$http', '$window', '$scope', 'uiGmapGoogleMapApi', 'Core', 'Location',
+	function($http, $window, $scope, uiGmapGoogleMapApi, Core, Location) {
 		// Start loading geolocation if available
 		if ($window.navigator.geolocation) {
 			$window.navigator.geolocation.getCurrentPosition(
 				function(position) { // success
-					lat = position.coords.latitude;
-					lng = position.coords.longitude;
-
-					// Call the functions already requesting location
-					for (var i = 0; i < toGeoLocate.length; i++) {
-						(toGeoLocate[i])(lat, lng);
-					}
-					toGeoLocate = null;
+					Location.setGeolocation(position.coords.latitude, position.coords.longitude);
 				},
 				function() { // error
 					console.log('Geolocate error');
 					$scope.$apply(function() {
-						$scope.geolocateError = true;
+						Location.geo_error = true;
 					});
 				}
 			);
 		}
 		
 		// Function to check if no geolocation error and browser supports geolocation
-		$scope.hasGeolocation = function() { return !$scope.geolocateError && $window.navigator.geolocation; };
-		
+		$scope.hasGeolocation = function() { return !Location.geo_error && $window.navigator.geolocation; };		
 		$scope.getGeolocationErrorMss = function() { return (this.hasGeolocation() ? '' : 'Geolocation disabled by user'); };
 
-		var loadWithLatLng = function(lat, lng) {
-			var url = '/loadRepresentatives/' + lat + '/' + lng;
-			console.log(url);
-			$http.get(url)
-				.success(function(data) {
-					if (!data.error) {
-						console.log(data);
-						for (var key in data) {
-							Core.addLastRow(data[key]);
-						}
-					} else {
-						Core.sendError('Failed to load your representatives!');
-					}
-				})
-				.error(function(data) {
-					Core.sendError('Failed to load your representatives!');
-				});
+		$scope.setLocationLoading = function() {
+			Core.removeRow({ _id: $scope.row._id });
+			Location.addLoadingLocationRow();
 		};
 
 		// Send load districts with geolocaiton
 		$scope.withCurrentLocation = function() {
-			Core.removeRow({ _id: $scope.row._id });
-
-			withGeoLocation(loadWithLatLng);
+			$scope.setLocationLoading();
+			Location.withGeoLocation(Location.loadWithLatLng);
 		};
 
 		// Send load districts with address
 		$scope.withAddress = function() {
-			Core.removeRow({ _id: $scope.row._id });
+			$scope.setLocationLoading();
 			
 			$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent($scope.address) + '&key=AIzaSyD0d7h9MKnvO8J_aWUO1PdJP4hntSzRWfA')
 				.success(function(data) {
 						var location = data.results[0].geometry.location;
-						loadWithLatLng(location.lat, location.lng);
+						Location.loadWithLatLng(location.lat, location.lng);
 				})
 				.error(function(data) {
 					Core.sendError('Failed to load your representatives with the given address!');
