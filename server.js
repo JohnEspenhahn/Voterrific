@@ -71,22 +71,14 @@ app.use(express.static(path.resolve('./bower_components')));
 // Load models
 var modelFiles = glob.sync('./app/models/**/*.js');
 for (var i = 0; i < modelFiles.length; i++) { require(modelFiles[i]); }
-var User = mongoose.model('User');
-
-// Finalize passport
-passport.serializeUser(function(user, done) { done(null, user._id); });
-passport.deserializeUser(function(id, done) {
-	User.findById(id, function(err, user) {
-		done(err, user);
-	});
-});
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash()); // use connect-flash for flash messages stored in session
 
 // Load routers	
 var routeFiles = glob.sync('./app/routes/**/*.js');
 for (var i = 0; i < routeFiles.length; i++) { require(routeFiles[i])(app); }
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 
 // Single index file route

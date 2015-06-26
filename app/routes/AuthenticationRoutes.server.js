@@ -1,6 +1,8 @@
 'use strict';
 
 var winston = require('winston'),
+	mongoose = require('mongoose'),
+	User = mongoose.model('User'),
 	passport = require('passport'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	FacebookStrategy = require('passport-facebook').Strategy,
@@ -8,6 +10,16 @@ var winston = require('winston'),
 	config = require('../config/ConfigController.server.js'),
 	AuthenticationController = require('../controllers/AuthenticationController.server.js');
 	
+passport.serializeUser(function(user, done) { 
+	done(null, user._id); 
+});
+
+passport.deserializeUser(function(id, done) {
+	User.findById(id, function(err, user) {
+		done(err, user);
+	});
+});
+
 // Strategy callback is the same for Facebook and Google
 function callback(provider) {
 	return function(req, accessToken, refreshToken, profile, done) {
