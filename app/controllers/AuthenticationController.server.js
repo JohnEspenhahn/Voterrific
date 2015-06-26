@@ -21,9 +21,9 @@ passport.deserializeUser(function(id, done) {
 // Login using the specified strategy
 exports.oauthCallback = function(strategy) {
 	return function(req, res, next) {
-		passport.authenticate(strategy, function(err, user, redirectURL) {
-			winston.debug('Authenticating ' + strategy);
+		console.log('Authenticating ' + strategy);
 
+		passport.authenticate(strategy, function(err, user, redirectURL) {
 			if (err || !user) {
 				winston.info('Auth error: ' + err);
 				return res.redirect('/?error=' + errors.get('login_failed'));
