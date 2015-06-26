@@ -20,14 +20,11 @@
 		</div>
 	</div>
 	<div class="rep-body">
-		<voterrific-accordion close-others="oneAtATime" class="accordion">
-
-			<!-- Campaign finance info -->
-			<span ng-init="funds = { isCloseable: true, type: 'Funds', content: { funds: content.funds.format(2) } }">
-				<voterrific-accordion-group is-open="funds.isOpen" is-disabled="false" row="funds" class="accordion-group">
+		<span ng-if="content.contributors" ng-init="funds = { type: 'Funds', content: content.contributors }" class="inner-accordion-init">
+			<voterrific-accordion close-others="oneAtATime" class="accordion">
+				<voterrific-accordion-group is-open="funds.isOpen" row="funds" class="accordion-group">
 				</voterrific-accordion-group>
-			</span>
-
-		</voterrific-accordion>
+			</voterrific-accordion>
+		</span>
 	</div>
 </div>

@@ -46,8 +46,6 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 			$http.get(url)
 				.success(function(data) {
 					if (!data.error) {
-						Core.removeRow({ _id: $scope.row._id });
-
 						console.log(data);
 						for (var key in data) {
 							Core.addLastRow(data[key]);
@@ -63,11 +61,15 @@ angular.module('location').controller('LocationController', [ '$http', '$window'
 
 		// Send load districts with geolocaiton
 		$scope.withCurrentLocation = function() {
+			Core.removeRow({ _id: $scope.row._id });
+
 			withGeoLocation(loadWithLatLng);
 		};
 
 		// Send load districts with address
 		$scope.withAddress = function() {
+			Core.removeRow({ _id: $scope.row._id });
+			
 			$http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent($scope.address) + '&key=AIzaSyD0d7h9MKnvO8J_aWUO1PdJP4hntSzRWfA')
 				.success(function(data) {
 						var location = data.results[0].geometry.location;

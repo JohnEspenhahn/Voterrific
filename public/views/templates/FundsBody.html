@@ -1,2 +1,3 @@
-Funds Body<br>
-${{ content.funds }}
+<table class="funds-body">
+	<tr ng-repeat="(funder, amount) in content"><td>{{ funder }}</td><td class="currency">{{ amount[1] | currency }}</td></tr>
+</table>

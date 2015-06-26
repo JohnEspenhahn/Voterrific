@@ -12,9 +12,9 @@ var RowSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
-	isCloseable: {
+	noHeader: {
 		type: Boolean,
-		default: true
+		default: false
 	},
 	isAlert: {
 		type: Boolean,

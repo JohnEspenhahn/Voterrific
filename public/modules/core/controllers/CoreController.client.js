@@ -24,9 +24,11 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 // Main entry
 .directive('voterrificEntry', [ '$templateCache', '$sce', '$compile', function($templateCache, $sce, $compile) {
 	var linker = function(scope, element) {
-		var templateUrl = 'views/templates/' + scope.row.type + scope.folder + '.html';
+		if (!scope.row) {
+			console.log(scope);
+		}
 
-		console.log('Entry ' + scope.row.type);
+		var templateUrl = 'views/templates/' + scope.row.type + scope.folder + '.html';
 		
 		element.html($templateCache.get(templateUrl));
 		$compile(element.contents())(scope);

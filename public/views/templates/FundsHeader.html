@@ -1,5 +1,5 @@
 <div class="funds-header">
 	<div class="title">
-		Campaign Funds&nbsp;&nbsp;<small><i>${{ content.funds }}</i></small>
+		Total Campaign Funds<span class="currency">{{ content | sumObject:1 | currency }}</span>
 	</div>
 </div>

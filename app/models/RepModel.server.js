@@ -18,11 +18,10 @@ var RepSchema = new Schema({
 	contact_url: { type: String },
 	phone: { type: String },
 
-	// DEBUG
-	funds: { type: Number, default: 100000 }
+	contributors: Object
 });
 
-RepSchema.index( { bioguide_id: 1, transparencydata_id: 1 } , { unique: true } );
+RepSchema.index( { bioguide_id: 1, transparencydata_id: 1 } , { unique: true, sparse: true } );
 
 /**
  * Attempt to save this representative if it is unique
