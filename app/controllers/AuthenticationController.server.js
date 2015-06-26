@@ -5,18 +5,6 @@ var mongoose = require('mongoose'),
 	User = mongoose.model('User'),
 	passport = require('passport'),
 	errors = require('./ErrorsController.server.js');
-	
-// used to serialize the user for the session
-passport.serializeUser(function(user, done) {
-	done(null, user._id);
-});
-
-// used to deserialize the user
-passport.deserializeUser(function(id, done) {
-	User.findById(id, function(err, user) {
-		done(err, user);
-	});
-});
 
 // Login using the specified strategy
 exports.oauthCallback = function(strategy) {
