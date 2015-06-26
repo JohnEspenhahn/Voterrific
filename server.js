@@ -2,7 +2,6 @@
 
 var express = require('express'),
 	app = express(),
-	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
 	path = require('path'),
@@ -53,7 +52,6 @@ winston.handleExceptions(new winston.transports.File({
 
 // Setup app
 app.set('view engine', 'ejs');
-app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
