@@ -42,22 +42,22 @@ module.exports = {
 		apiKey: 'AIzaSyD0d7h9MKnvO8J_aWUO1PdJP4hntSzRWfA',
 		clientID : process.env.GOOGLE_ID || '237066238200-n2c2o4lbhv69qgj9hdmhv1i49mu7ug0j.apps.googleusercontent.com',
 		clientSecret : process.env.GOOGLE_SECRET || 'TKcw9ePM0Yn_EfE53qbYCz-c',
-		callbackURL : '/auth/google/callback'
+		callbackURL : 'https://voter-rific.rhcloud.com/auth/google/callback'
 	},
 	facebook : {
 		clientID : process.env.FACEBOOK_ID || '1415470705444429',
 		clientSecret : process.env.FACEBOOK_SECRET || 'de6ab9b117ae679904119eaa1b73af02',
-		callbackURL : '/auth/facebook/callback'
+		callbackURL : 'https://voter-rific.rhcloud.com/auth/facebook/callback'
 	},
 	twitter : {
 		clientID : '',
 		clientSecret : '',
-		callbackURL : '/auth/twitter/callback'
+		callbackURL : 'https://voter-rific.rhcloud.com/auth/twitter/callback'
 	},
 	linkedin : {
 		clientID : '75vx8i9ltastcm',
 		clientSecret : 'njbee2bqrNrwNJBu',
-		callbackURL : '/auth/linkedin/callback'
+		callbackURL : 'https://voter-rific.rhcloud.com/auth/linkedin/callback'
 	},
 	sunlight : {
 		apiKey: 'bee89768caac44f9bfd80b41cb8e262c'
