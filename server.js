@@ -8,7 +8,7 @@ var express = require('express'),
 	glob = require('glob'),
 	winston = require('winston'),
 	fs = require('fs'),
-	flash    = require('connect-flash')
+	flash    = require('connect-flash'),
 	mongoose = require('mongoose'),
 	passport = require('passport'),
 	session = require('express-session'),
@@ -51,6 +51,10 @@ mongoose.connection.on('error', function(err) {
 	process.exit(-1);
 });
 
+// Load models
+var modelFiles = glob.sync('./app/models/**/*.js');
+for (var i = 0; i < modelFiles.length; i++) { require(modelFiles[i]); }
+
 // Load tools config (ex: passport config)
 var toolsFiles = glob.sync('./app/config/tools/**/*.js');
 for (var i = 0; i < toolsFiles.length; i++) { require(toolsFiles[i])(app, passport); }
@@ -78,10 +82,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-
-// Load models
-var modelFiles = glob.sync('./app/models/**/*.js');
-for (var i = 0; i < modelFiles.length; i++) { require(modelFiles[i]); }
 
 // Load routers
 var routeFiles = glob.sync('./app/routes/**/*.js');

@@ -50,6 +50,11 @@ angular.module('core').factory('Core', [ '$http', '$localStorage', '$timeout', f
 		},
 
 		_acceptTerms: function() {
+			// DEBUG pre-alpha liability alert
+			this.addAlert({ _id: 'nonliable', type: 'warning', content: {
+				text: 'This application is still in pre-alpha and not ready for public use. Use at your own risk. We are not liable for any damages caused by this application regardess of fault.'
+			} });
+
 			if (!$localStorage.accept_terms) {
 				this.addAlert({ _id: 'accept_terms', type: 'info', content: { 
 					text: 'By using Voterrific you are agreeing to our <a href="/terms_of_use">Terms of Use</a> and <a href="/privacy_policy">Privacy Policy</a>. We use cookies to improve the user experience, and use social profile logins to save you the trouble of making <i>yet another</i> account.'

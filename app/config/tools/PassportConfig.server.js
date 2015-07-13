@@ -75,7 +75,7 @@ function callback(provider) {
 }
 
 // The configuring function to be called when loaded
-modules.exports = function(app, passport) {
+module.exports = function(app, passport) {
 	passport.serializeUser(function(user, done) { 
 		done(null, user._id); 
 	});
