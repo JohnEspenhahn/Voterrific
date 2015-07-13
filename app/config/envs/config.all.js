@@ -26,6 +26,8 @@ module.exports = {
 	sessionCollection: 'sessions',
 	// The session cookie settings
 	sessionCookie: {
+		secret: '0ns5df@#sadfA12', // must be the same as sessionSecret
+
 		path: '/',
 		domain: 'localhost',
 		httpOnly: true,
