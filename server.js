@@ -72,6 +72,11 @@ if (process.env.NODE_ENV === 'production') {
 	app.set('view cache', false);
 }
 
+app.use(express.static(path.resolve('./public')));
+app.use(express.static(path.resolve('./bower_components')));
+
+// CookieParser should be above session
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
@@ -91,12 +96,6 @@ app.use(session({
 	store: new MongoStore({ mongooseConnection: mongoose.connection }),
 	cookie: config.sessionCookie
 }));
-
-app.use(express.static(path.resolve('./public')));
-app.use(express.static(path.resolve('./bower_components')));
-
-// CookieParser should be above session
-app.use(cookieParser());
 
 app.use(passport.initialize());
 app.use(passport.session());
