@@ -21,7 +21,7 @@ passport.deserializeUser(function(id, done) {
 });
 
 // Then load controller
-var AuthenticationController = require('../controllers/AuthenticationController.server.js')
+var AuthenticationController = require('../controllers/AuthenticationController.server.js');
 
 // Strategy callback is the same for Facebook and Google
 function callback(provider) {

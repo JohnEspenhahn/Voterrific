@@ -19,27 +19,16 @@ var express = require('express'),
 	flash = require('flash'),
 	config = require('./app/config/ConfigController.server.js');
 
-// Bootstrap db connection
-mongoose.connect(config.db.uri, config.db.options, function(err) {
-	if (err) {
-		winston.error('Could not connect to MongoDB!');
-		winston.error(err);
-	}
-});
-mongoose.connection.on('error', function(err) {
-	winston.error('MongoDB connection error: ' + err);
-	process.exit(-1);
-});
-
 // Setup log
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, { 
 	colorize: true, 
-	leve: 'debug',
+	level: 'debug',
 	handleExceptions: true,
 	humanReadableUnhandledException: true
 });
-winston.add(winston.transports.File, { 
+winston.add(winston.transports.File, {
+	level: 'debug',
 	filename: config.log.folder + '/' + config.log.default,
 	prettyPrint: true,
 	json: false
@@ -52,6 +41,18 @@ winston.handleExceptions(new winston.transports.File({
 	json: false,
 	colorize: true
 }));
+
+// Bootstrap db connection
+mongoose.connect(config.db.uri, config.db.options, function(err) {
+	if (err) {
+		winston.error('Could not connect to MongoDB!');
+		winston.error(err);
+	}
+});
+mongoose.connection.on('error', function(err) {
+	winston.error('MongoDB connection error: ' + err);
+	process.exit(-1);
+});
 
 // Setup app
 app.set('view engine', 'ejs');
@@ -115,6 +116,7 @@ app.get('*', function(req, res) {
         return res.redirect(['https://', req.hostname, req.url].join(''));
     }
 	
+	winston.debug('User ' + req.user);
 	res.render(path.resolve('./public/index.ejs'), { user: req.user });
 });
 
