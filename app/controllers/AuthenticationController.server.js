@@ -1,8 +1,6 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-	winston = require('winston'),
-	User = mongoose.model('User'),
+var winston = require('winston'),
 	passport = require('passport'),
 	errors = require('./ErrorsController.server.js');
 
@@ -29,56 +27,6 @@ exports.oauthCallback = function(strategy) {
 			});
 		})(req, res, next);
 	};
-};
-
-// Save the profile loaded by either Facebook or Google
-exports.saveOAuthUserProfile = function(req, provider, providerUserProfile, done) {
-	var searchQuery = {};
-	searchQuery['providers.' + provider] = providerUserProfile.providers[provider];
-	
-	if (!req.user) {
-		User.findOne(searchQuery, function(err, user) {
-			if (err) {
-				return done(err);
-			} else if (!user) {
-				user = new User(providerUserProfile);
-
-				// And save the user
-				user.save(function(err) {
-					return done(err, user);
-				});
-			} else {
-				return done(err, user);
-			}
-		});
-	} else {
-		// User is already logged in, join the provider data to the existing user
-		var user = req.user;
-
-		// If not signed in on this provider
-		if (!user.providers[provider]) {
-			// Check if another user is signed in with this provider
-			User.findOne(searchQuery, function(err, otherUser) {
-				if (err) {
-					return done(err, null, '/');
-				} else if (!otherUser) {
-					// Not yet linked to a user, so link it to this user
-					user.providers[provider] = providerUserProfile.providers[provider];
-					user.markModified('providers'); // Tell mongoose that we've updated the field
-
-					user.save(function(err) {
-						return done(err, user, '/');
-					});
-				} else {
-					// Already linked to another user
-					return done(null, user, '/?error=' + errors.get('linked_other'));
-				}
-			});
-		} else {
-			// Already linked to this
-			return done(null, user, '/?error=' + errors.get('linked_this'));
-		}
-	}
 };
 
 exports.logout = function(req, res){

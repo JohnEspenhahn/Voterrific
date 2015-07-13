@@ -26,7 +26,6 @@
     "ejs": "^2.3.1",
     "express": "~4.10.1",
     "express-session": "^1.11.2",
-    "flash": "^1.1.0",
     "glob": "^5.0.10",
     "grunt-auto-install": "^0.2.4",
     "grunt-cli": "0.1.13",
@@ -40,7 +39,8 @@
     "passport-google-oauth": "^0.2.0",
     "passport-linkedin-oauth2": "^1.2.0",
     "request": "2.x",
-    "winston": "^1.0.0"
+    "winston": "^1.0.0",
+    "connect-flash": "~0.1.1"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
