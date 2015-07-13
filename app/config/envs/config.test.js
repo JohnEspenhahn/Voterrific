@@ -13,7 +13,7 @@ module.exports = {
 		callbackURL : '/auth/twitter/callback'
 	},
 	linkedin : {
-		callbackURL : 'auth/linkedin/callback'
+		callbackURL : '/auth/linkedin/callback'
 	},
 
 	log: {

@@ -9,7 +9,7 @@ module.exports = {
 
 	sessionCookie: {
 		domain: 'voter-rific.rhcloud.com',
-		secure: true
+		// secure: true
 	},
 
 	jsResources: [
