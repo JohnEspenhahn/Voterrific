@@ -7,9 +7,9 @@ var winston = require('winston'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	FacebookStrategy = require('passport-facebook').Strategy,
 	LinkedInStrategy = require('passport-linkedin-oauth2').Strategy,
-	config = require('../config/ConfigController.server.js');
-
-// Sessions before loading AuthenticationController	
+	config = require('../config/ConfigController.server.js'),
+	AuthenticationController = require('../controllers/AuthenticationController.server.js');
+	
 passport.serializeUser(function(user, done) { 
 	done(null, user._id); 
 });
@@ -19,9 +19,6 @@ passport.deserializeUser(function(id, done) {
 		done(err, user);
 	});
 });
-
-// Then load controller
-var AuthenticationController = require('../controllers/AuthenticationController.server.js');
 
 // Strategy callback is the same for Facebook and Google
 function callback(provider) {

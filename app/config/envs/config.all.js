@@ -27,6 +27,7 @@ module.exports = {
 	// The session cookie settings
 	sessionCookie: {
 		path: '/',
+		domain: 'localhost',
 		httpOnly: true,
 		// If secure is set to true then it will cause the cookie to be set
 		// only when SSL-enabled (HTTPS) is used, and otherwise it won't

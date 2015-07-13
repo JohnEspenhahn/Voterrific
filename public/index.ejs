@@ -20,7 +20,13 @@
 	<!--Embedding The User Object-->
 	<script type="text/javascript">
 		<% if (user) { %>
-		var user = <%- JSON.stringify(user) %>;
+		var user = { 
+				displayName:<%- JSON.stringify(user.displayName) %>, 
+				providers: {
+					fromHTTP: true
+					<% for(var key in user.providers) { %> , <%- key %>: true <% } %>
+			 	} 
+			};
 		<% } %>
 	</script>
 

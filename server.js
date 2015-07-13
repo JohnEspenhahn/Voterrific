@@ -77,7 +77,7 @@ app.use(express.static(path.resolve('./public')));
 app.use(express.static(path.resolve('./bower_components')));
 
 // CookieParser should be above session
-app.use(cookieParser());
+app.use(cookieParser(config.sessionSecret));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(methodOverride());
