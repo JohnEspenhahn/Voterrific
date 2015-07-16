@@ -9,7 +9,7 @@ function scrubCongress(rep) {
 	return new Rep({
 		bioguide_id: rep.bioguide_id,
 		
-		name: (rep.nickname || rep.first_name) + ' ' + (rep.middle_name ? rep.middle_name + ' ' : '') + rep.last_name,
+		name: (rep.nickname || rep.first_name) + ' ' + (rep.middle_name ? rep.middle_name + '. ' : '') + rep.last_name,
 		party: rep.party,
 		term: new Date(rep.term_start).getFullYear() + '-' + new Date(rep.term_end).getFullYear(),
 		chamber: 'US ' + rep.chamber.substring(0,1).toUpperCase() + rep.chamber.substring(1),

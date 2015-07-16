@@ -10,7 +10,7 @@ angular.module('core').controller('CoreController', [ '$scope', '$location', '$h
 			if ($scope.error) {
 				Core.sendError($scope.error);
 			}
-	   });
+		});
 		
 		// Load error message from location search
 		var err = $location.search().error;

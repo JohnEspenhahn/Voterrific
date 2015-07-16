@@ -70,7 +70,7 @@ app.use(methodOverride());
 app.set('view engine', 'ejs');
 
 // trust first proxy (for secure)
-if (config.secure) app.set('trust proxy', 1)
+if (config.secure) app.set('trust proxy', 1);
 
 // Express MongoDB session storage
 app.use(session({
@@ -96,7 +96,6 @@ app.get('*', function(req, res) {
         return res.redirect(['https://', req.hostname, req.url].join(''));
     }
 	
-	winston.debug('User ' + req.user);
 	res.render(path.resolve('./public/index.ejs'), { user: req.user });
 });
 

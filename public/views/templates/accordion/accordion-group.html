@@ -2,13 +2,13 @@
 
 	<!-- Optional header -->
 	<div class="panel-heading accordion-heading" ng-if="!row.noHeader">
-		<a href="javascript:void(0)" tabindex="0" class="accordion-toggle" ng-click="toggleOpen($event)">
+		<a href="javascript:void(0)" tabindex="0" class="accordion-toggle" hm-tap="onTap" hm-press="onTapDown" hm-pressup="onTapUp">
 			<div class="accordion-title">
 				<span class="pull-left badge"></span> 
 				
 				<voterrific-entry folder="'Header'" row="row" content="row.content"></voterrific-entry>
 
-				<span class="pull-right badge"></span>
+				<span class="pull-right fa" ng-class="{ 'fa-thumb-tack': isPinned }"></span>
 			</div>
 		</a>
 	</div>

@@ -1,19 +1,27 @@
 'use strict';
 
-angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
+angular.module('ui.voterrific', ['ui.bootstrap.collapse', 'hmTouchEvents'])
 
-.controller('VoterrificAccordionController', ['$scope', '$attrs', function ($scope, $attrs) {
+.constant('accordionConfig', {
+  closeOthers: false
+})
+
+.controller('VoterrificAccordionController', ['$scope', '$attrs', 'accordionConfig', function ($scope, $attrs, accordionConfig) {
 
   // This array keeps track of the accordion groups
   this.groups = [];
 
   // Ensure that all the groups in this accordion are closed, unless close-others explicitly says not to
   this.closeOthers = function(openGroup) {
-    angular.forEach(this.groups, function (group) {
-      if ( group !== openGroup ) {
-        group.isOpen = false;
-      }
-    });
+    var closeOthers = angular.isDefined($attrs.closeOthers) ? $scope.$eval($attrs.closeOthers) : accordionConfig.closeOthers;
+    console.log('close others ' + closeOthers); // debug
+    if (closeOthers) {
+      angular.forEach(this.groups, function (group) {
+        if (!group.isPinned && group !== openGroup) {
+          group.isOpen = false;
+        }
+      });
+    }
   };
 
   // This is called from the accordion-group directive to add itself to the accordion
@@ -29,7 +37,7 @@ angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
   // This is called from the accordion-group directive when to remove itself
   this.removeGroup = function(group) {
     var index = this.groups.indexOf(group);
-    if ( index !== -1 ) {
+    if (index !== -1) {
       this.groups.splice(index, 1);
     }
   };
@@ -43,12 +51,13 @@ angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
     restrict:'EA',
     controller:'VoterrificAccordionController',
     transclude: true,
+    replace: false,
     templateUrl: 'template/accordion/accordion.html'
   };
 })
 
 // The accordion-group directive indicates a block of html that will expand and collapse in an accordion
-.directive('voterrificAccordionGroup', function() {
+.directive('voterrificAccordionGroup', ['$timeout', function($timeout) {
   return {
     require:'^voterrificAccordion',         // We need this directive to be inside an accordion
     restrict:'EA',
@@ -57,26 +66,57 @@ angular.module('ui.voterrific', ['ui.bootstrap.collapse'])
     scope: {
       isOpen: '=?',
       isDisabled: '=?',
+      isPinned: '=?',
       row: '='
     },
     link: function(scope, element, attrs, accordionCtrl) {
       accordionCtrl.addGroup(scope);
 
-      // Double click to toggle others
-      var lastClick = Date.now();
-      scope.toggleOpen = function(event) {
-        if (!scope.isDisabled) {
-          var now = Date.now();
-          if (now - lastClick < 250) {
-            console.log('Double click');
-            accordionCtrl.closeOthers(scope);
-          } else {
-            scope.isOpen = !scope.isOpen;
-          }
+      // Close others on open
+      scope.$watch('isOpen', function(value) {
+        if (value) {
+          accordionCtrl.closeOthers(scope);
+        }
+      });
 
-          lastClick = now;
+      // Handle pin on right click
+      element.bind('contextmenu', function(event) {
+          scope.$apply(function() {
+            console.log('Right click'); // debug
+            event.preventDefault();
+            scope.isOpen = scope.isPinned = !scope.isPinned;
+          });
+      });
+
+      // Handle pin on long tap
+      var tapTimer = null;
+      scope.onTapDown = function(event) { 
+        console.log('Tap down'); // debug
+        tapTimer = $timeout(function() {
+          tapTimer = null;
+          scope.isOpen = scope.isPinned = !scope.isPinned;
+        }, 50);
+      };
+
+      scope.onTapUp = function(event) {
+        console.log('Tap up'); // debug
+        if (tapTimer !== null) {
+          $timeout.cancel(tapTimer);
+          tapTimer = null;
+
+          scope.onTap();
+        }
+      };
+
+      scope.onTap = function() {
+        if (!scope.isDisabled) {
+          console.log('On click'); // debug
+          scope.isOpen = !scope.isOpen;
+
+          // When closing unpin
+          if (!scope.isOpen) scope.isPinned = false;
         }
       };
     }
   };
-});
+}]);
