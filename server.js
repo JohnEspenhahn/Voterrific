@@ -70,7 +70,7 @@ app.use(methodOverride());
 app.set('view engine', 'ejs');
 
 // trust first proxy (for secure)
-if (config.secure) app.set('trust proxy', 1);
+app.set('trust proxy', 1);
 
 // Express MongoDB session storage
 app.use(session({

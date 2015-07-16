@@ -5,6 +5,7 @@ var wintson = require('winston'),
 	Schema = mongoose.Schema;
 
 var RepSchema = new Schema({
+	leg_id: { type: String },
 	bioguide_id: { type: String },
 	transparencydata_id: { type: String },
 
@@ -21,7 +22,7 @@ var RepSchema = new Schema({
 	contributors: Object
 });
 
-RepSchema.index( { bioguide_id: 1, transparencydata_id: 1 } , { unique: true, sparse: true } );
+RepSchema.index( { leg_id: 1, bioguide_id: 1, transparencydata_id: 1 } , { unique: true } );
 
 /**
  * Attempt to save this representative if it is unique
@@ -30,7 +31,7 @@ RepSchema.index( { bioguide_id: 1, transparencydata_id: 1 } , { unique: true, sp
  */
 RepSchema.methods.saveUnique = function(callback) {
 	var _this = this;
-    mongoose.model('Rep').findOne({ $and: [ {'bioguide_id': this.bioguide_id}, {'transparencydata_id': this.transparencydata_id} ] }, function (err, doc) {
+    mongoose.model('Rep').findOne({ $and: [ {'leg_id': this.leg_id, 'bioguide_id': this.bioguide_id}, {'transparencydata_id': this.transparencydata_id} ] }, function (err, doc) {
     	if (err) {
     		callback(err);
         } else if (doc) {

@@ -119,6 +119,7 @@ h2 a:hover, h2 a:focus, h3 a:hover, h3 a:focus {
 /** Logout button */
 .logout {
 	font-size: 16px;
+	margin-top: 6px;
 }
 
 .rep-body, .rep-header, 

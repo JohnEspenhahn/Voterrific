@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('authentication').controller('AuthenticationController', [ '$scope', '$http', '$location', 'Authentication', 
-	function($scope, $http, $location, Authentication) {
+angular.module('authentication').controller('AuthenticationController', [ '$scope', '$http', '$window', '$location', 'Authentication', 
+	function($scope, $http, $window, $location, Authentication) {
 		// Put authentication on the scope
 		$scope.authentication = Authentication;
 		
@@ -12,7 +12,7 @@ angular.module('authentication').controller('AuthenticationController', [ '$scop
 						if (!data || !data.success) {
 							$scope.error = 'Logout failed';
 						} else {
-							Authentication.user = null;
+							$window.location.reload();
 						}
 					})
 					.error(function(err) {
