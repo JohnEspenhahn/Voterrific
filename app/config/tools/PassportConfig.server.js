@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 	GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
 	FacebookStrategy = require('passport-facebook').Strategy,
 	LinkedInStrategy = require('passport-linkedin-oauth2').Strategy,
+	TwitterStrategy = require('passport-twitter').Strategy,
 	errors = require('../../controllers/ErrorsController.server.js'),
 	config = require('../ConfigController.server.js');
 
@@ -91,6 +92,13 @@ module.exports = function(app, passport) {
 			clientSecret: config.google.clientSecret,
 			callbackURL: config.google.callbackURL,
 		}, callback('google')
+	));
+
+	passport.use(new TwitterStrategy({
+			consumerKey: config.twitter.consumerKey,
+			consumerSecret: config.twitter.consumerSecret,
+			callbackURL: config.twitter.callbackURL
+		}, callback('twitter')
 	));
 
 	passport.use(new FacebookStrategy({

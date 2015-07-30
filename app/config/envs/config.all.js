@@ -50,8 +50,8 @@ module.exports = {
 		callbackURL : 'https://voter-rific.rhcloud.com/auth/facebook/callback'
 	},
 	twitter : {
-		clientID : '',
-		clientSecret : '',
+		consumerKey : '7vv2mkofkQ48rMIVnLGqQZXUt',
+		consumerSecret : 'POySCRoVr6V1ATOOpFp3I7bL7ODkpK6oWvRjZ3ahFJWbvWpHmE',
 		callbackURL : 'https://voter-rific.rhcloud.com/auth/twitter/callback'
 	},
 	linkedin : {

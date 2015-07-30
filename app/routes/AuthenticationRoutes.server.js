@@ -9,6 +9,10 @@ module.exports = function(app, passport) {
 	}));
 	app.route('/auth/google/callback').get(AuthenticationController.oauthCallback('google'));
 
+	// Setting the twitter oauth routes
+	app.route('/auth/twitter').get(passport.authenticate('twitter', { }));
+	app.route('/auth/twitter/callback').get(AuthenticationController.oauthCallback('twitter'));
+
 	// Setting the facebook oauth routes
 	app.route('/auth/facebook').get(passport.authenticate('facebook', { }));
 	app.route('/auth/facebook/callback').get(AuthenticationController.oauthCallback('facebook'));

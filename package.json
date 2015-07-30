@@ -41,7 +41,8 @@
     "request": "2.x",
     "winston": "^1.0.0",
     "connect-flash": "~0.1.1",
-    "bowser": "~1.0.0"
+    "bowser": "~1.0.0",
+    "passport-twitter": "~1.0.3"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
