@@ -77,8 +77,10 @@ function callback(provider) {
 
 // The configuring function to be called when loaded
 module.exports = function(app, passport) {
-	passport.serializeUser(function(user, done) { 
-		done(null, user._id); 
+	passport.serializeUser(function(user, done) {
+		console.log('Serializing');
+		console.log(user);
+		done(null, (user._id || user.id)); 
 	});
 
 	passport.deserializeUser(function(id, done) {
